@@ -1,0 +1,13 @@
+.displayContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.displayedValue {
+    top: 50%;
+    right: 50%;
+    color: #457b9d;
+    font-size: 260px;
+}
