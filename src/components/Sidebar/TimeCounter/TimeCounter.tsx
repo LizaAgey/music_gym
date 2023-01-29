@@ -5,17 +5,18 @@ import styles from './TimeCounter.module.css'
 type TimeCounterType = {
     title: string
     measures: 'sec' | 'min'
+    value: number
+    setValue: (value: number)=>void
+    minValue: number
 }
 
 const TimeCounter: React.FC<TimeCounterType> = (props) => {
-    const MIN_VALUE = 0
-    const [value, setValue] = useState<number>(MIN_VALUE)
 
     const onChangeHandler = (value: number | string) => {
         if (typeof value === 'number') {
-            value >= MIN_VALUE
-                ? setValue(value)
-                : setValue(MIN_VALUE)
+            value >= props.minValue
+                ? props.setValue(value)
+                : props.setValue(props.minValue)
         }
     };
     return (
@@ -24,7 +25,7 @@ const TimeCounter: React.FC<TimeCounterType> = (props) => {
             <div className={styles.timeInput}>
                 <Input
                     type={'number'}
-                    value={value}
+                    value={props.value}
                     setValue={(value) => onChangeHandler(value)}
                 />
                 <p>{props.measures}</p>

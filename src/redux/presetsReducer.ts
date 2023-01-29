@@ -3,50 +3,53 @@ import {ActionsType} from './redux_store';
 
 export type PresetsPageType = {
     presets: Array<PresetGroupType>
+    selectedPresetID: string
 }
 export type PresetElementType = {
-    id: string
-    value: string
-    sound: string
+    elementId: string
+    elementValue: string
+    elementSound: string
 }
 export type PresetGroupType = {
-    id: string
-    elements: Array<PresetElementType>
-    groupName: string
+    presetId: string
+    presetElements: Array<PresetElementType>
+    presetName: string
 }
 
 export const SELECT_PRESET = 'SELECT_PRESET'
-export const selectPresetAС = () => ({type: SELECT_PRESET} as const)
+export const selectPresetAС = (presetId: string) => ({type: SELECT_PRESET, presetId: presetId} as const)
 
 const initialState: PresetsPageType = {
     presets: [
         {
-            id: v1(),
-            elements: [
-                {id: v1(), value: 'cat_1', sound: './sounds/cat.wav'},
-                {id: v1(), value: 'dog_1', sound: './sounds/dog.wav'},
-                {id: v1(), value: 'frog_1', sound: './sounds/frog.wav'},
-                {id: v1(), value: 'sheep_1', sound: './sounds/sheep.mp3'},
+            presetId: v1(),
+            presetElements: [
+                {elementId: v1(), elementValue: 'cat_1', elementSound: './sounds/cat.wav'},
+                {elementId: v1(), elementValue: 'dog_1', elementSound: './sounds/dog.wav'},
+                {elementId: v1(), elementValue: 'frog_1', elementSound: './sounds/frog.wav'},
+                {elementId: v1(), elementValue: 'sheep_1', elementSound: './sounds/sheep.mp3'},
             ],
-            groupName: 'Preset 1'
+            presetName: 'Preset 1'
         },
         {
-            id: v1(),
-            elements: [
-                {id: v1(), value: 'cat_2', sound: './sounds/cat.wav'},
-                {id: v1(), value: 'dog_2', sound: './sounds/dog.wav'},
-                {id: v1(), value: 'frog_2', sound: './sounds/frog.wav'},
-                {id: v1(), value: 'sheep_2', sound: './sounds/sheep.mp3'},
+            presetId: v1(),
+            presetElements: [
+                {elementId: v1(), elementValue: 'cat_2', elementSound: './sounds/cat.wav'},
+                {elementId: v1(), elementValue: 'dog_2', elementSound: './sounds/dog.wav'},
+                {elementId: v1(), elementValue: 'frog_2', elementSound: './sounds/frog.wav'},
+                {elementId: v1(), elementValue: 'sheep_2', elementSound: './sounds/sheep.mp3'},
             ],
-            groupName: 'Preset 2'
+            presetName: 'Preset 2'
         }
-    ]
+    ],
+    selectedPresetID: ""
 }
 const profileReducer = (state: PresetsPageType = initialState, action: ActionsType): PresetsPageType => {
 
     switch (action.type) {
         case SELECT_PRESET:
-            return state
+            console.log(state)
+            return {...state, selectedPresetID: action.presetId}
 
         default:
             return state;

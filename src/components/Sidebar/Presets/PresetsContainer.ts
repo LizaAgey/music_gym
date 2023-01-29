@@ -8,7 +8,7 @@ type MapStatePropsType = {
     state: PresetsPageType
 }
 type MapDispatchPropsType = {
-    selectPreset: () => void
+    selectPreset: (presetId: string) => void
 }
 export type PresetsType = MapStatePropsType & MapDispatchPropsType
 
@@ -20,8 +20,8 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
 
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
     return {
-        selectPreset: () => {
-            dispatch(selectPresetAС())
+        selectPreset: (presetId: string) => {
+            dispatch(selectPresetAС(presetId))
         }
     }
 
