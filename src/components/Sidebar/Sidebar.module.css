@@ -4,4 +4,23 @@
     left: 0;
     height: 100vh;
     background-color: #a8dadc;
+    color: #1d3557;
 }
+.sidebarContent {
+    padding: 30px;
+}
+
+.sidebarContent h3, h2 {
+    text-align: center;
+}
+
+.sidebarContent h2  {
+    color: #e63946;
+    text-align:center;
+    text-transform:uppercase;
+    font-size:26px; letter-spacing:1px;
+}
+.sidebarContent  p {
+    font-size:18px;
+}
+
