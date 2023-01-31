@@ -15,9 +15,7 @@ const Sidebar: React.FC<any> = () => {
         setSoundMode(!soundMode)
     };
 
-    // const applySettings = () => {
-    //     countDownTime(period, interval, soundMode, preset)
-    // };
+
     return (
         <div className={styles.sidebarContainer}>
             <div className={styles.sidebarContent}>

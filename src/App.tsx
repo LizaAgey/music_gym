@@ -1,18 +1,19 @@
 import React from 'react';
 import './App.css';
-import Sidebar from './components/Sidebar/Sidebar';
-import Display from './components/Display/Display';
 import Grid from '@mui/material/Grid';
+import SidebarContainer from './components/Sidebar/SidebarContainer';
+import DisplayContainer from './components/Display/DisplayContainer';
+
 
 function App() {
     return (
         <div className="App">
             <Grid container spacing={0}>
                 <Grid item xs={4}>
-                    <Sidebar/>
+                    <SidebarContainer/>
                 </Grid>
                 <Grid item xs={8}>
-                    <Display/>
+                    <DisplayContainer/>
                 </Grid>
             </Grid>
         </div>

@@ -1,14 +1,16 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect} from 'react';
 import {PresetsType} from './PresetsContainer';
 import {PresetGroupType} from '../../../redux/presetsReducer';
 import styles from './Presets.module.css'
-import {log} from 'util';
+import {presetsInitialData} from '../../../data/presetsInitialData';
 
 const Presets: React.FC<PresetsType> = (props) => {
-    // const [selectedValue, setSelectedValue] = useState<string>("")
+
+    useEffect(() => {
+        props.setPresets(presetsInitialData)
+    }, [])
+
     const selectOnChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
-        // setSelectedValue(event.target.value)
-        // props.selectPreset(presetId,)
         props.selectPreset(event.target.options[event.target.selectedIndex].id);
     };
 
@@ -28,15 +30,15 @@ const Presets: React.FC<PresetsType> = (props) => {
                 })}
             </select>
 
-            {/*{props.state.selectedPresetID !== ''*/}
-            {/*    ? <div>*/}
-            {/*        Included in the preset:*/}
-            {/*        <ul>{props.state.presets.find(preset => preset.presetName === selectedValue)?.presetElements.map((element) => {*/}
-            {/*            return <li>{element.elementValue}</li>*/}
-            {/*        })}</ul>*/}
+            {props.state.selectedPresetID !== ''
+                ? <div>
+                    Included in the preset:
+                    <ul>{props.state.presets.find(preset => preset.presetId === props.state.selectedPresetID)?.presetElements.map((element) => {
+                        return <li>{element.elementValue}</li>
+                    })}</ul>
 
-            {/*    </div>*/}
-            {/*    : null}*/}
+                </div>
+                : null}
         </div>
     );
 };

@@ -1,9 +1,15 @@
-import presetsReducer, {selectPresetAС} from './presetsReducer';
+import presetsReducer, {selectPresetAС, setPresetsAC} from './presetsReducer';
 import {combineReducers, createStore} from 'redux';
+import {pauseAС, playAС, saveSettingsAС} from './settingsReducer';
 
 
 export type ActionsType =
     ReturnType<typeof selectPresetAС>
+    | ReturnType<typeof setPresetsAC>
+    | ReturnType<typeof saveSettingsAС>
+    | ReturnType<typeof pauseAС>
+    | ReturnType<typeof playAС>
+
 
 
 let rootReducer = combineReducers({
