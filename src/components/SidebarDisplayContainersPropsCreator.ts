@@ -1,5 +1,6 @@
 import {Dispatch} from 'redux';
 import {pauseAС, playAС, saveSettingsAС, SettingsPageType} from '../redux/settingsReducer';
+import {AppStateType} from '../redux/redux_store';
 
 
 export type MapStateSettingsPropsType = {
@@ -13,9 +14,9 @@ export type MapDispatchSettingsPropsType = {
 
 export type SettingsType = MapStateSettingsPropsType & MapDispatchSettingsPropsType
 
-export const mapStateSettingsToProps = (state: SettingsPageType): MapStateSettingsPropsType => {
+export const mapStateSettingsToProps = (state: AppStateType): MapStateSettingsPropsType => {
     return {
-        state: state
+        state: state.settingsPage
     }
 }
 

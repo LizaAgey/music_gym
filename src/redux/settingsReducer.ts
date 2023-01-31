@@ -21,11 +21,14 @@ export const settingsInitialState: SettingsPageType = {
 export const SAVE_SETTINGS = 'SAVE_SETTINGS'
 export const PAUSE = 'PAUSE'
 export const PLAY = 'PLAY'
+export const SET_SETTINGS_PRESET_ID = 'SET_SETTINGS_PRESET_ID'
+
 
 export const saveSettingsAС = (presetId: string, trainingPeriod: number, interval: number, isSoundOn: boolean) => (
     {type: SAVE_SETTINGS, presetId, trainingPeriod, interval, isSoundOn} as const)
 export const pauseAС = () => ({type: PAUSE} as const)
 export const playAС = () => ({type: PLAY} as const)
+export const setSettingsPresetIdAC = (presetId: string) => ({type: SET_SETTINGS_PRESET_ID, presetId} as const)
 
 const settingsReducer = (state: SettingsPageType = settingsInitialState, action: ActionsType): SettingsPageType => {
 
@@ -43,6 +46,8 @@ const settingsReducer = (state: SettingsPageType = settingsInitialState, action:
             return {...state, isPaused: true}
         case PLAY:
             return {...state, isPaused: false}
+        case SET_SETTINGS_PRESET_ID:
+            return {...state, presetId: action.presetId}
         default:
             return state;
     }

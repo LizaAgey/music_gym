@@ -3,18 +3,23 @@ import styles from './Sidebar.module.css'
 import TimeCounter from './TimeCounter/TimeCounter';
 import PresetsContainer from './Presets/PresetsContainer';
 import Button from '../Button/Button';
+import {SettingsType} from '../SidebarDisplayContainersPropsCreator';
 
 
-const Sidebar: React.FC<any> = () => {
+const Sidebar: React.FC<SettingsType> = (props) => {
     const MIN_VALUE = 0
-    const [period, setPeriod] = useState<number>(MIN_VALUE)
-    const [interval, setInterval] = useState<number>(MIN_VALUE)
-    const [soundMode, setSoundMode] = useState<boolean>(false)
+    const [trainingPeriod, setTrainingPeriod] = useState<number>(props.state.trainingPeriod)
+    const [interval, setInterval] = useState<number>(props.state.interval)
+    const [soundMode, setSoundMode] = useState<boolean>(props.state.isSoundOn)
+    const [presetId, setPresetId] = useState(props.state.presetId)
 
     const soundModeHandler = () => {
         setSoundMode(!soundMode)
     };
 
+    const saveSettingsHandler = () => {
+     props.saveSettings(presetId, trainingPeriod, interval, soundMode)
+    };
 
     return (
         <div className={styles.sidebarContainer}>
@@ -24,7 +29,7 @@ const Sidebar: React.FC<any> = () => {
 
                 <PresetsContainer/>
 
-                <TimeCounter title={'Training period:'} measures={'min'} value={period} setValue={setPeriod}
+                <TimeCounter title={'Training period:'} measures={'min'} value={trainingPeriod} setValue={setTrainingPeriod}
                              minValue={MIN_VALUE}/>
                 <TimeCounter title={'Interval of displaying:'} measures={'sec'} value={interval} setValue={setInterval}
                              minValue={MIN_VALUE}/>
@@ -34,7 +39,7 @@ const Sidebar: React.FC<any> = () => {
                     <Button name={soundMode ? "on" : "off"} onClick={soundModeHandler}/>
                 </div>
 
-                <Button name={'Start'} onClick={()=>{}}></Button>
+                <Button name={'Start'} onClick={saveSettingsHandler}></Button>
             </div>
         </div>
     );

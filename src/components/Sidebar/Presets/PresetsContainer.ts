@@ -3,20 +3,24 @@ import {PresetGroupType, PresetsPageType, selectPresetAС, setPresetsAC} from '.
 import {Dispatch} from 'redux';
 import Presets from './Presets';
 import {connect} from 'react-redux';
+import {setSettingsPresetIdAC} from '../../../redux/settingsReducer';
 
 type MapStatePropsType = {
     state: PresetsPageType
+    settingsPresetId: string
 }
 type MapDispatchPropsType = {
     selectPreset: (presetId: string) => void
     setPresets: (presets: Array<PresetGroupType>) => void
+    setSettingsPresetID: (presetId: string)=> void
 }
 
 export type PresetsType = MapStatePropsType & MapDispatchPropsType
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
-        state: state.presetsPage
+        state: state.presetsPage,
+        settingsPresetId: state.settingsPage.presetId
     }
 }
 
@@ -27,6 +31,9 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
         },
         setPresets: (presets: Array<PresetGroupType>) => {
             dispatch(setPresetsAC(presets))
+        },
+        setSettingsPresetID: (presetId: string) => {
+            dispatch(setSettingsPresetIdAC(presetId))
         }
     }
 
