@@ -12,6 +12,7 @@ const Presets: React.FC<PresetsType> = (props) => {
 
     const selectOnChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         props.selectPreset(event.target.options[event.target.selectedIndex].id);
+        props.setSettingsPresetID(event.target.options[event.target.selectedIndex].id)
     };
 
     return (

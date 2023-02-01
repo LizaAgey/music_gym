@@ -11,7 +11,7 @@ const Sidebar: React.FC<SettingsType> = (props) => {
     const [trainingPeriod, setTrainingPeriod] = useState<number>(props.state.trainingPeriod)
     const [interval, setInterval] = useState<number>(props.state.interval)
     const [soundMode, setSoundMode] = useState<boolean>(props.state.isSoundOn)
-    const [presetId, setPresetId] = useState(props.state.presetId)
+    const presetId = props.state.presetId
 
     const soundModeHandler = () => {
         setSoundMode(!soundMode)

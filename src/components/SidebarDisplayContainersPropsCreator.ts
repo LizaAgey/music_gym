@@ -1,5 +1,5 @@
 import {Dispatch} from 'redux';
-import {pauseAС, playAС, saveSettingsAС, SettingsPageType} from '../redux/settingsReducer';
+import {pauseAС, playAС, saveSettingsAС, setSettingsPresetIdAC, SettingsPageType} from '../redux/settingsReducer';
 import {AppStateType} from '../redux/redux_store';
 
 
@@ -10,6 +10,7 @@ export type MapDispatchSettingsPropsType = {
     saveSettings: (presetId: string, trainingPeriod: number, interval: number, isSoundOn: boolean) => void
     pause: () => void
     play: () => void
+    setSettingsPresetId: (presetId: string) => void
 }
 
 export type SettingsType = MapStateSettingsPropsType & MapDispatchSettingsPropsType
@@ -31,6 +32,9 @@ export const mapDispatchSettingsToProps = (dispatch: Dispatch): MapDispatchSetti
         play: () => {
             dispatch(playAС())
         },
+        setSettingsPresetId: (presetId: string) => {
+            dispatch(setSettingsPresetIdAC(presetId))
+        }
     }
 
 };

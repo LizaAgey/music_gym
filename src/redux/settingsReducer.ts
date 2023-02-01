@@ -1,4 +1,6 @@
 import {ActionsType} from './redux_store';
+import {presetsInitialData} from '../data/presetsInitialData';
+import {PresetElementType} from './presetsReducer';
 
 export type SettingsPageType = {
     presetId: string
@@ -7,15 +9,17 @@ export type SettingsPageType = {
     isInProgress: boolean
     isSoundOn: boolean
     isPaused: boolean
+    presetsToDisplay: Array<PresetElementType>
 }
 
 export const settingsInitialState: SettingsPageType = {
-    presetId: '1',
-    trainingPeriod: 5,
-    interval: 3,
+    presetId: '',
+    trainingPeriod: 0,
+    interval: 0,
     isInProgress: false,
     isSoundOn: false,
-    isPaused: false
+    isPaused: false,
+    presetsToDisplay: []
 }
 
 export const SAVE_SETTINGS = 'SAVE_SETTINGS'
@@ -34,18 +38,21 @@ const settingsReducer = (state: SettingsPageType = settingsInitialState, action:
 
     switch (action.type) {
         case SAVE_SETTINGS:
+            let presetElementsToDisplay: Array<PresetElementType> = presetsInitialData.filter((presetGroup) => presetGroup.presetId === action.presetId)[0].presetElements
+
             return {
                 presetId: action.presetId,
                 trainingPeriod: action.trainingPeriod,
                 interval: action.interval,
                 isInProgress: true,
                 isSoundOn: action.isSoundOn,
-                isPaused: false
+                isPaused: false,
+                presetsToDisplay: presetElementsToDisplay
             }
         case PAUSE:
-            return {...state, isPaused: true}
+            return {...state, isPaused: true, isInProgress: false}
         case PLAY:
-            return {...state, isPaused: false}
+            return {...state, isPaused: false, isInProgress: true}
         case SET_SETTINGS_PRESET_ID:
             return {...state, presetId: action.presetId}
         default:
