@@ -14,8 +14,8 @@ export type SettingsPageType = {
 
 export const settingsInitialState: SettingsPageType = {
     presetId: '',
-    trainingPeriod: 0,
-    interval: 0,
+    trainingPeriod: 3,
+    interval: 2,
     isInProgress: false,
     isSoundOn: false,
     isPaused: false,

@@ -4,9 +4,10 @@
     left: 0;
     height: 100vh;
     background-color: #a8dadc;
+    width: 400px;
 }
 .sidebarContent {
-    padding: 30px;
+    padding: 30px 30px;
 }
 
 .sidebarContent h3, h2 {

@@ -17,29 +17,29 @@ const Presets: React.FC<PresetsType> = (props) => {
 
     return (
         <div>
-            <p>Presets:</p>
-            <select
-                name="sounds"
-                id="sounds"
-                className={styles.selectElement}
-                onChange={(e) => selectOnChangeHandler(e)}>
+            {/*<p>Presets:</p>*/}
+            {/*<select*/}
+            {/*    name="sounds"*/}
+            {/*    id="sounds"*/}
+            {/*    className={styles.selectElement}*/}
+            {/*    onChange={(e) => selectOnChangeHandler(e)}>*/}
 
-                <option value="" selected disabled hidden>Choose a preset</option>
+            {/*    <option value="" selected disabled hidden>Choose a preset</option>*/}
 
-                {props.state.presets.map((preset: PresetGroupType) => {
-                    return <option value={preset.presetName} id={preset.presetId}>{preset.presetName}</option>
-                })}
-            </select>
+            {/*    {props.state.presets.map((preset: PresetGroupType) => {*/}
+            {/*        return <option value={preset.presetName} id={preset.presetId}>{preset.presetName}</option>*/}
+            {/*    })}*/}
+            {/*</select>*/}
 
-            {props.state.selectedPresetID !== ''
-                ? <div>
-                    Included in the preset:
-                    <ul>{props.state.presets.find(preset => preset.presetId === props.state.selectedPresetID)?.presetElements.map((element) => {
-                        return <li>{element.elementValue}</li>
-                    })}</ul>
+            {/*{props.state.selectedPresetID !== ''*/}
+            {/*    ? <div>*/}
+            {/*        Included in the preset:*/}
+            {/*        <ul>{props.state.presets.find(preset => preset.presetId === props.state.selectedPresetID)?.presetElements.map((element) => {*/}
+            {/*            return <li>{element.elementValue}</li>*/}
+            {/*        })}</ul>*/}
 
-                </div>
-                : null}
+            {/*    </div>*/}
+            {/*    : null}*/}
         </div>
     );
 };
