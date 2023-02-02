@@ -11,8 +11,6 @@ const {Countdown} = Statistic;
 
 const Display: React.FC<SettingsType> = (props) => {
     const [displayValue, setDisplayValue] = useState('')
-    const deadline = Date.now() + props.settings.trainingPeriod * 60000
-
     const [inProgress, setInProgress] = React.useState<boolean>(false);
 
     const onFinish = () => {
@@ -23,16 +21,14 @@ const Display: React.FC<SettingsType> = (props) => {
     const start = (): any => {
         // START
         const testArr: Array<PresetElementType> = props.presets.presets[0].presetElements
-        setTimeout(function () {
-            const interval = setInterval(() => {
-                const randomIndex = Math.floor(Math.random() * testArr.length);
-                setDisplayValue(testArr[randomIndex].elementValue);
-            }, props.settings.interval * 1000);
+        const interval = setInterval(() => {
+            const randomIndex = Math.floor(Math.random() * testArr.length);
+            setDisplayValue(testArr[randomIndex].elementValue);
+        }, props.settings.interval * 1000);
 
-            setTimeout(function () {
-                clearInterval(interval);
-            }, props.settings.trainingPeriod * 60000);
-        }, 3000);
+        setTimeout(function () {
+            clearInterval(interval);
+        }, props.settings.trainingPeriod * 60000);
     }
 
     return (
@@ -46,7 +42,9 @@ const Display: React.FC<SettingsType> = (props) => {
 
             {inProgress
                 ? <div>
-                    <Countdown title="Training period" value={deadline} onFinish={onFinish}/>
+                    <Countdown title="Training period"
+                               value={Date.now() + props.settings.trainingPeriod * 60000}
+                               onFinish={onFinish}/>
                     <h1>{displayValue}</h1>
                 </div>
                 : ''}
