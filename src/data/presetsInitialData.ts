@@ -1,7 +1,19 @@
 import { v1 } from "uuid";
-import {PresetGroupType} from '../redux/presetsReducer';
 
-export const presetsInitialData: Array<PresetGroupType>  = [
+export type PresetElementType = {
+    elementId: string
+    elementValue: string
+    elementSound: string
+}
+export type PresetGroupType = {
+    presetId: string
+    presetElements: Array<PresetElementType>
+    presetName: string
+}
+
+export type PresetsInitialDataType = Array<PresetGroupType>
+
+export const presetsInitialData: PresetsInitialDataType  = [
     {
         presetId: "1",
         presetElements: [

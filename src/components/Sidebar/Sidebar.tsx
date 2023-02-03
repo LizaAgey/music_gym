@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Sidebar.module.css'
 import {SettingsType} from '../SidebarDisplayContainersPropsCreator';
-import {Button, Form, InputNumber, Select, Slider, Switch} from "antd";
-import {PresetGroupType} from "../../redux/presetsReducer";
-import {presetsInitialData} from "../../data/presetsInitialData";
-import PresetsContainer from './Presets/PresetsContainer';
+import {Button, Form, InputNumber, Select, Slider, Switch} from 'antd';
+import {PresetGroupType, presetsInitialData} from '../../data/presetsInitialData';
 
 
 const Sidebar: React.FC<SettingsType> = (props) => {
-    const MIN_VALUE = 0
-    const [trainingPeriod, setTrainingPeriod] = useState<number>(props.settings.trainingPeriod)
-    const [interval, setInterval] = useState<number>(props.settings.interval)
-    const [soundMode, setSoundMode] = useState<boolean>(props.settings.isSoundOn)
-    const presetId = props.settings.presetId
+    useEffect(() => {
+        props.setPresetsDataToStore(presetsInitialData)
+    }, [])
+
+
+    const [soundMode, setSoundMode] = useState<boolean>(props.state.isSoundOn)
+    const presetId = props.state.presetId
 
     const soundModeHandler = () => {
         setSoundMode(!soundMode)
@@ -30,23 +30,32 @@ const Sidebar: React.FC<SettingsType> = (props) => {
         // props.saveSettings(presetId, trainingPeriod, interval, soundMode);
     };
 
-    // нужно засетать,чтобы снизу селекта увидеть описание этого пресета с описанием всех его айтемов
+    //  -----------OK
+    const onPresetSelectChangeHandler = (currentPresetName: string) => {
+        let currentPresetId = props.state.presetsInitialData.find(presetGroup => presetGroup.presetName === currentPresetName)?.presetId
+        currentPresetId && props.setSettingsPresetId(currentPresetId)
+    }
 
-    // const onPresetSelectChange = (value: string) => {
-    //     const presetId: any = props.presets.presets.find(preset => preset.presetName === value);
-    //     if (presetId && typeof presetId === 'string') {
-    //         props.setSettingsPresetID(presetId);
-    //     }
-    // }
+    const onTrainingInputChangeHandler = (trainingPeriod: number| null) => {
+        trainingPeriod && props.setTrainingPeriod(trainingPeriod)
+    };
+
+    const onIntervalChangeHandler = (interval: number) => {
+     props.setInterval(interval)
+    };
+
+    const onSoundModeChangeHandler = (soundMode: boolean) => {
+        props.setSoundMode(soundMode)
+    };
+
+
+    console.log(props.state)
 
     return (
         <div className={styles.sidebarContainer}>
             <div className={styles.sidebarContent}>
                 <h2>Music GYM</h2>
                 <h3>Settings</h3>
-
-                {/*  JUST TO SET PRESET INTO STATE */}
-                <PresetsContainer/>
 
                 <Form{...formItemLayout}
                      onFinish={onFinish}
@@ -57,36 +66,34 @@ const Sidebar: React.FC<SettingsType> = (props) => {
                         name="preset"
                         label="Preset"
                         hasFeedback
-                        rules={[{required: true, message: 'Please select your country!'}]}>
+                        rules={[{required: true, message: 'Please select a preset!'}]}>
 
                         <Select
-                            // onChange={onPresetSelectChange}
-                            placeholder="Please select a country">
-                            {props.presets.presets.map((preset: PresetGroupType) => {
+                            onChange={onPresetSelectChangeHandler}
+                            placeholder="Please select a preset">
+                            {props.state.presetsInitialData.map((preset: PresetGroupType) => {
                                 return <Option value={preset.presetName}
                                                id={preset.presetId}>{preset.presetName}</Option>
                             })}
                         </Select>
 
-                        {props.presets.selectedPresetID !== ''
-                            ? <div>
-                                Included in the preset:
-                                <ul>{props.presets.presets.find(preset => preset.presetId === props.presets.selectedPresetID)?.presetElements.map((element) => {
-                                    return <li>{element.elementValue}</li>
-                                })}</ul>
 
-                            </div>
-                            : null}
                     </Form.Item>
+
+                    {props.state.presetId !== ''
+                        ? <div>
+                            Included in the preset:
+                            <ul>{props.state.presetsInitialData.find(preset => preset.presetId === props.state.presetId)?.presetElements.map((element) => {
+                                return <li>{element.elementValue}</li>
+                            })}</ul>
+
+                        </div>
+                        : null}
 
                     <Form.Item label="Training time, min">
                         <Form.Item name="input-number" noStyle>
-                            <InputNumber min={1} max={10}/>
+                            <InputNumber min={1} max={20} onChange={onTrainingInputChangeHandler}/>
                         </Form.Item>
-                    </Form.Item>
-
-                    <Form.Item name="sound" label="Sound" valuePropName="checked">
-                        <Switch/>
                     </Form.Item>
 
                     <Form.Item name="interval" label="Interval">
@@ -99,7 +106,12 @@ const Sidebar: React.FC<SettingsType> = (props) => {
                                     12: '12',
                                     15: '15',
                                 }}
+                                onChange={onIntervalChangeHandler}
                         />
+                    </Form.Item>
+
+                    <Form.Item name="sound" label="Sound" valuePropName="checked">
+                        <Switch onChange={onSoundModeChangeHandler}/>
                     </Form.Item>
 
                     <Form.Item wrapperCol={{span: 12, offset: 6}}>
@@ -113,4 +125,4 @@ const Sidebar: React.FC<SettingsType> = (props) => {
     );
 };
 
-export default Sidebar;
+export default Sidebar

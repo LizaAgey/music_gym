@@ -2,12 +2,9 @@ import React, {useEffect, useState} from 'react';
 import styles from './Display.module.css'
 import {SettingsType} from '../SidebarDisplayContainersPropsCreator';
 import {Statistic} from 'antd';
-import {presetsInitialData} from '../../data/presetsInitialData';
-import {PresetElementType, PresetGroupType} from "../../redux/presetsReducer";
-
+import {PresetElementType} from '../../data/presetsInitialData';
 
 const {Countdown} = Statistic;
-
 
 const Display: React.FC<SettingsType> = (props) => {
     const [displayValue, setDisplayValue] = useState('')
@@ -20,15 +17,15 @@ const Display: React.FC<SettingsType> = (props) => {
 
     const start = (): any => {
         // START
-        const testArr: Array<PresetElementType> = props.presets.presets[0].presetElements
+        const testArr: Array<PresetElementType> = props.state.presetsInitialData[0].presetElements
         const interval = setInterval(() => {
             const randomIndex = Math.floor(Math.random() * testArr.length);
             setDisplayValue(testArr[randomIndex].elementValue);
-        }, props.settings.interval * 1000);
+        }, props.state.interval * 1000);
 
         setTimeout(function () {
             clearInterval(interval);
-        }, props.settings.trainingPeriod * 60000);
+        }, props.state.trainingPeriod * 60000);
     }
 
     return (
@@ -43,13 +40,13 @@ const Display: React.FC<SettingsType> = (props) => {
             {inProgress
                 ? <div>
                     <Countdown title="Training period"
-                               value={Date.now() + props.settings.trainingPeriod * 60000}
+                               value={Date.now() + props.state.trainingPeriod * 60000}
                                onFinish={onFinish}/>
                     <h1>{displayValue}</h1>
                 </div>
                 : ''}
 
-            {props.settings.presetId === ''
+            {props.state.presetId === ''
                 ? <img src="./music_gym.png" alt="music" className={styles.logo}/>
                 : <div className={styles.displayedValue}>
                     {displayValue}
