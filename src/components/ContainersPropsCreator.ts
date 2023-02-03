@@ -2,10 +2,10 @@ import {Dispatch} from 'redux';
 import {
     pauseAС,
     playAС,
-    saveSettingsAС, setIntervalAC,
+    saveSettingsAС,
     setPresetsDataToStoreAC,
-    setSettingsPresetIdAC, setSoundModeAC,
-    SettingsPageType, setTrainingPeriodAC
+    setSettingsPresetIdAC,
+    SettingsPageType
 } from '../redux/settingsReducer';
 import {AppStateType} from '../redux/redux_store';
 import {PresetsInitialDataType} from '../data/presetsInitialData';
@@ -15,14 +15,14 @@ export type MapStateSettingsPropsType = {
 
 }
 export type MapDispatchSettingsPropsType = {
-    saveSettings: (presetId: string, trainingPeriod: number, interval: number, isSoundOn: boolean) => void
+    saveSettings: (trainingPeriod: number, interval: number, isSoundOn: boolean) => void
     pause: () => void
     play: () => void
     setSettingsPresetId: (presetId: string) => void
     setPresetsDataToStore: (presetsData: PresetsInitialDataType) => void
-    setTrainingPeriod: (trainingPeriod: number) => void
-    setInterval: (interval:number) => void
-    setSoundMode: (soundMode:boolean) => void
+    // setTrainingPeriod: (trainingPeriod: number) => void
+    // setInterval: (interval:number) => void
+    // setSoundMode: (soundMode:boolean) => void
 }
 
 
@@ -36,8 +36,8 @@ export const mapStateSettingsToProps = (state: AppStateType): MapStateSettingsPr
 
 export const mapDispatchSettingsToProps = (dispatch: Dispatch): MapDispatchSettingsPropsType => {
     return {
-        saveSettings: (presetId: string, trainingPeriod: number, interval: number, isSoundOn: boolean) => {
-            dispatch(saveSettingsAС(presetId, trainingPeriod, interval, isSoundOn))
+        saveSettings: (trainingPeriod: number, interval: number, isSoundOn: boolean) => {
+            dispatch(saveSettingsAС(trainingPeriod, interval, isSoundOn))
         },
         pause: () => {
             dispatch(pauseAС())
@@ -51,15 +51,15 @@ export const mapDispatchSettingsToProps = (dispatch: Dispatch): MapDispatchSetti
         setPresetsDataToStore: (presetsData: PresetsInitialDataType) => {
             dispatch(setPresetsDataToStoreAC(presetsData))
         },
-        setTrainingPeriod: (trainingPeriod:number) => {
-            dispatch(setTrainingPeriodAC(trainingPeriod))
-        },
-        setInterval: (interval:number) => {
-            dispatch(setIntervalAC(interval))
-        },
-        setSoundMode: (soundMode:boolean) => {
-            dispatch(setSoundModeAC(soundMode))
-        }
+        // setTrainingPeriod: (trainingPeriod:number) => {
+        //     dispatch(setTrainingPeriodAC(trainingPeriod))
+        // },
+        // setInterval: (interval:number) => {
+        //     dispatch(setIntervalAC(interval))
+        // },
+        // setSoundMode: (soundMode:boolean) => {
+        //     dispatch(setSoundModeAC(soundMode))
+        // }
     }
 
 };

@@ -1,55 +1,40 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Sidebar.module.css'
-import {SettingsType} from '../SidebarDisplayContainersPropsCreator';
+import {SettingsType} from '../ContainersPropsCreator';
 import {Button, Form, InputNumber, Select, Slider, Switch} from 'antd';
 import {PresetGroupType, presetsInitialData} from '../../data/presetsInitialData';
 
+type FormSettingsValuesType = {
+    presetName: string,
+    trainingPeriod: number,
+    interval: number,
+    soundMode: boolean
+}
 
-const Sidebar: React.FC<SettingsType> = (props) => {
+export const Sidebar: React.FC<SettingsType> = (props) => {
     useEffect(() => {
         props.setPresetsDataToStore(presetsInitialData)
     }, [])
-
-
-    const [soundMode, setSoundMode] = useState<boolean>(props.state.isSoundOn)
-    const presetId = props.state.presetId
-
-    const soundModeHandler = () => {
-        setSoundMode(!soundMode)
-    };
 
     const formItemLayout = {
         labelCol: {span: 6},
         wrapperCol: {span: 14},
     };
-
     const {Option} = Select;
 
-    const onFinish = (formValues: any) => {
-        console.log(formValues);
-        // props.saveSettings(presetId, trainingPeriod, interval, soundMode);
-    };
-
-    //  -----------OK
     const onPresetSelectChangeHandler = (currentPresetName: string) => {
         let currentPresetId = props.state.presetsInitialData.find(presetGroup => presetGroup.presetName === currentPresetName)?.presetId
         currentPresetId && props.setSettingsPresetId(currentPresetId)
     }
 
-    const onTrainingInputChangeHandler = (trainingPeriod: number| null) => {
-        trainingPeriod && props.setTrainingPeriod(trainingPeriod)
+    const onStartButtonHandler = (formValues: FormSettingsValuesType) => {
+        props.saveSettings(formValues.trainingPeriod, formValues.interval, formValues.soundMode)
+        props.play()
     };
 
-    const onIntervalChangeHandler = (interval: number) => {
-     props.setInterval(interval)
+    const onStopButtonClickHandler = () => {
+     props.pause()
     };
-
-    const onSoundModeChangeHandler = (soundMode: boolean) => {
-        props.setSoundMode(soundMode)
-    };
-
-
-    console.log(props.state)
 
     return (
         <div className={styles.sidebarContainer}>
@@ -58,12 +43,12 @@ const Sidebar: React.FC<SettingsType> = (props) => {
                 <h3>Settings</h3>
 
                 <Form{...formItemLayout}
-                     onFinish={onFinish}
-                     initialValues={{'input-number': 3, 'sound': true, 'interval': 3}}
+                     onFinish={onStartButtonHandler}
+                     initialValues={{'trainingPeriod': 2, 'soundMode': true, 'interval': 3}}
                      style={{maxWidth: 600}}>
 
                     <Form.Item
-                        name="preset"
+                        name="presetName"
                         label="Preset"
                         hasFeedback
                         rules={[{required: true, message: 'Please select a preset!'}]}>
@@ -73,7 +58,9 @@ const Sidebar: React.FC<SettingsType> = (props) => {
                             placeholder="Please select a preset">
                             {props.state.presetsInitialData.map((preset: PresetGroupType) => {
                                 return <Option value={preset.presetName}
-                                               id={preset.presetId}>{preset.presetName}</Option>
+                                               id={preset.presetId}
+                                               key={preset.presetId}
+                                >{preset.presetName}</Option>
                             })}
                         </Select>
 
@@ -84,15 +71,15 @@ const Sidebar: React.FC<SettingsType> = (props) => {
                         ? <div>
                             Included in the preset:
                             <ul>{props.state.presetsInitialData.find(preset => preset.presetId === props.state.presetId)?.presetElements.map((element) => {
-                                return <li>{element.elementValue}</li>
+                                return <li key={element.elementId}>{element.elementValue}</li>
                             })}</ul>
 
                         </div>
                         : null}
 
                     <Form.Item label="Training time, min">
-                        <Form.Item name="input-number" noStyle>
-                            <InputNumber min={1} max={20} onChange={onTrainingInputChangeHandler}/>
+                        <Form.Item name="trainingPeriod" noStyle>
+                            <InputNumber min={1} max={20}/>
                         </Form.Item>
                     </Form.Item>
 
@@ -106,23 +93,21 @@ const Sidebar: React.FC<SettingsType> = (props) => {
                                     12: '12',
                                     15: '15',
                                 }}
-                                onChange={onIntervalChangeHandler}
                         />
                     </Form.Item>
 
-                    <Form.Item name="sound" label="Sound" valuePropName="checked">
-                        <Switch onChange={onSoundModeChangeHandler}/>
+                    <Form.Item name="soundMode" label="Sound" valuePropName="checked">
+                        <Switch/>
                     </Form.Item>
 
                     <Form.Item wrapperCol={{span: 12, offset: 6}}>
-                        <Button type="primary" htmlType="submit">
-                            START
-                        </Button>
+                        <Button type="primary" htmlType="submit"> START </Button>
+
+                        {props.state.isInProgress && <Button type="default" onClick={onStopButtonClickHandler}> STOP </Button>}
+
                     </Form.Item>
                 </Form>
             </div>
         </div>
     );
 };
-
-export default Sidebar

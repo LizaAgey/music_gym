@@ -21,3 +21,17 @@ function App() {
 }
 
 export default App;
+
+/*
+const onKeyUpHandler = (event: KeyboardEvent<HTMLDivElement>) => {
+
+    for (let i = 0; i < props.items.length; i++) {
+
+        if (event.key === 'Escape' || event.key === 'Enter') {
+            setExpanded(false)
+        }
+    }
+};
+
+<div className={styles.selectWrapper} tabIndex={0} onKeyUp={onKeyUpHandler}>
+*/

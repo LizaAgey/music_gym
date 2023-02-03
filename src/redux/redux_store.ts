@@ -2,9 +2,9 @@ import {combineReducers, createStore} from 'redux';
 import settingsReducer, {
     pauseAС,
     playAС,
-    saveSettingsAС, setIntervalAC,
+    saveSettingsAС,
     setPresetsDataToStoreAC,
-    setSettingsPresetIdAC, setSoundModeAC, setTrainingPeriodAC
+    setSettingsPresetIdAC,
 } from './settingsReducer';
 
 
@@ -14,9 +14,9 @@ export type ActionsType =
     | ReturnType<typeof playAС>
     | ReturnType<typeof setSettingsPresetIdAC>
     | ReturnType<typeof setPresetsDataToStoreAC>
-    | ReturnType<typeof setTrainingPeriodAC>
-    | ReturnType<typeof setIntervalAC>
-    | ReturnType<typeof setSoundModeAC>
+    // | ReturnType<typeof setTrainingPeriodAC>
+    // | ReturnType<typeof setIntervalAC>
+    // | ReturnType<typeof setSoundModeAC>
 
 
 let rootReducer = combineReducers({

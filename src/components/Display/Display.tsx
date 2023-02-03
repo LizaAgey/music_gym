@@ -1,59 +1,52 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import styles from './Display.module.css'
-import {SettingsType} from '../SidebarDisplayContainersPropsCreator';
+import {SettingsType} from '../ContainersPropsCreator';
 import {Statistic} from 'antd';
 import {PresetElementType} from '../../data/presetsInitialData';
 
 const {Countdown} = Statistic;
 
-const Display: React.FC<SettingsType> = (props) => {
-    const [displayValue, setDisplayValue] = useState('')
-    const [inProgress, setInProgress] = React.useState<boolean>(false);
+export const Display: React.FC<SettingsType> = (props) => {
+    console.log('display rerendered')
 
-    const onFinish = () => {
-        props.pause()
-        props.setSettingsPresetId('')
-    };
+    const onFinish = () => props.pause()
 
-    const start = (): any => {
-        // START
-        const testArr: Array<PresetElementType> = props.state.presetsInitialData[0].presetElements
+    const DisplayElement = (props: { elementsToDisplay: Array<PresetElementType>, interval: number, trainingPeriod: number }) => {
+
+        const [displayValue, setDisplayValue] = useState('')
         const interval = setInterval(() => {
-            const randomIndex = Math.floor(Math.random() * testArr.length);
-            setDisplayValue(testArr[randomIndex].elementValue);
-        }, props.state.interval * 1000);
+            const randomIndex = Math.floor(Math.random() * props.elementsToDisplay.length);
+            setDisplayValue(props.elementsToDisplay[randomIndex].elementValue);
+        }, props.interval * 1000);
 
         setTimeout(function () {
             clearInterval(interval);
-        }, props.state.trainingPeriod * 60000);
+        }, props.trainingPeriod * 60000);
+
+
+        return <div>{displayValue}</div>
     }
+    const DisplayElementContainer = React.memo(DisplayElement)
+
 
     return (
         <div className={styles.displayContainer}>
-            <button onClick={() => {
-                setInProgress(!inProgress);
-                start();
-            }}>
-                start test
-            </button>
-
-            {inProgress
+            {props.state.isInProgress
                 ? <div>
                     <Countdown title="Training period"
                                value={Date.now() + props.state.trainingPeriod * 60000}
                                onFinish={onFinish}/>
-                    <h1>{displayValue}</h1>
-                </div>
-                : ''}
 
-            {props.state.presetId === ''
-                ? <img src="./music_gym.png" alt="music" className={styles.logo}/>
-                : <div className={styles.displayedValue}>
-                    {displayValue}
-                </div>}
+                    <DisplayElementContainer
+                        elementsToDisplay={props.state.presetElementsToDisplay}
+                        interval={props.state.interval}
+                        trainingPeriod={props.state.trainingPeriod}
+
+                    />
+                    {/*<h1>{displayValue}</h1>*/}
+                </div>
+                : <img src="./music_gym.png" alt="music" className={styles.logo}/>}
 
         </div>
     );
 };
-
-export default Display;
