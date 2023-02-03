@@ -17,10 +17,14 @@ export const presetsInitialData: PresetsInitialDataType  = [
     {
         presetId: "1",
         presetElements: [
-            {elementId: v1(), elementValue: 'cat_1', elementSound: './sounds/cat.wav'},
-            {elementId: v1(), elementValue: 'dog_1', elementSound: './sounds/dog.wav'},
-            {elementId: v1(), elementValue: 'frog_1', elementSound: './sounds/frog.wav'},
-            {elementId: v1(), elementValue: 'sheep_1', elementSound: './sounds/sheep.mp3'},
+            {elementId: v1(), elementValue: 'кошка', elementSound: './sounds/cat.wav'},
+            {elementId: v1(), elementValue: 'собака', elementSound: './sounds/dog.wav'},
+            {elementId: v1(), elementValue: 'дятел', elementSound: './sounds/dog.wav'},
+            {elementId: v1(), elementValue: 'козел', elementSound: './sounds/dog.wav'},
+            {elementId: v1(), elementValue: 'обезьяна', elementSound: './sounds/dog.wav'},
+            {elementId: v1(), elementValue: 'жопа', elementSound: './sounds/dog.wav'},
+            {elementId: v1(), elementValue: 'сиська', elementSound: './sounds/frog.wav'},
+            {elementId: v1(), elementValue: 'жорка', elementSound: './sounds/sheep.mp3'},
         ],
         presetName: 'Preset 1'
     },

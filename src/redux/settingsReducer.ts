@@ -24,7 +24,8 @@ export const settingsInitialState: SettingsPageType = {
 }
 
 export const SAVE_SETTINGS = 'SAVE_SETTINGS'
-export const PAUSE = 'PAUSE'
+export const SWITCH_PAUSE = 'SWITCH_PAUSE'
+export const STOP = 'STOP'
 export const PLAY = 'PLAY'
 export const SET_SETTINGS_PRESET_ID = 'SET_SETTINGS_PRESET_ID'
 export const SET_PRESETS = 'SET_PRESETS_DATA_TO_STORE'
@@ -35,7 +36,8 @@ export const SET_PRESETS = 'SET_PRESETS_DATA_TO_STORE'
 
 export const saveSettingsAС = (trainingPeriod: number, interval: number, isSoundOn: boolean) => (
     {type: SAVE_SETTINGS, trainingPeriod, interval, isSoundOn} as const)
-export const pauseAС = () => ({type: PAUSE} as const)
+export const switchPauseAС = () => ({type: SWITCH_PAUSE} as const)
+export const stopAС = () => ({type: STOP} as const)
 export const playAС = () => ({type: PLAY} as const)
 export const setSettingsPresetIdAC = (presetId: string) => ({type: SET_SETTINGS_PRESET_ID, presetId} as const)
 export const setPresetsDataToStoreAC = (presetsData: PresetsInitialDataType) => ({
@@ -61,8 +63,10 @@ const settingsReducer = (state: SettingsPageType = settingsInitialState, action:
                 isPaused: false,
                 presetElementsToDisplay: presetElementsToDisplay,
             }
-        case PAUSE:
-            return {...state, isPaused: true, isInProgress: false}
+        case SWITCH_PAUSE:
+            return {...state, isPaused: !state.isPaused, isInProgress: true}
+        case STOP:
+            return {...state, isPaused: false, isInProgress: false}
         case PLAY:
             return {...state, isPaused: false, isInProgress: true}
         case SET_SETTINGS_PRESET_ID:

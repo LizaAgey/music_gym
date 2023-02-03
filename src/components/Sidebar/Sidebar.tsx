@@ -3,6 +3,7 @@ import styles from './Sidebar.module.css'
 import {SettingsType} from '../ContainersPropsCreator';
 import {Button, Form, InputNumber, Select, Slider, Switch} from 'antd';
 import {PresetGroupType, presetsInitialData} from '../../data/presetsInitialData';
+import {Metronome} from "../Metronome/Metronome";
 
 type FormSettingsValuesType = {
     presetName: string,
@@ -29,11 +30,11 @@ export const Sidebar: React.FC<SettingsType> = (props) => {
 
     const onStartButtonHandler = (formValues: FormSettingsValuesType) => {
         props.saveSettings(formValues.trainingPeriod, formValues.interval, formValues.soundMode)
-        props.play()
+        props.start()
     };
 
     const onStopButtonClickHandler = () => {
-     props.pause()
+        props.stop()
     };
 
     return (
@@ -54,6 +55,7 @@ export const Sidebar: React.FC<SettingsType> = (props) => {
                         rules={[{required: true, message: 'Please select a preset!'}]}>
 
                         <Select
+                            defaultValue={props.state.presetsInitialData.length > 0 ? props.state.presetsInitialData[1].presetName : null}
                             onChange={onPresetSelectChangeHandler}
                             placeholder="Please select a preset">
                             {props.state.presetsInitialData.map((preset: PresetGroupType) => {
@@ -83,27 +85,17 @@ export const Sidebar: React.FC<SettingsType> = (props) => {
                         </Form.Item>
                     </Form.Item>
 
-                    <Form.Item name="interval" label="Interval">
-                        <Slider max={15}
-                                marks={{
-                                    1: '1',
-                                    3: '3',
-                                    6: '6',
-                                    9: '9',
-                                    12: '12',
-                                    15: '15',
-                                }}
-                        />
-                    </Form.Item>
-
                     <Form.Item name="soundMode" label="Sound" valuePropName="checked">
                         <Switch/>
                     </Form.Item>
 
+                    <Metronome/>
+
                     <Form.Item wrapperCol={{span: 12, offset: 6}}>
                         <Button type="primary" htmlType="submit"> START </Button>
 
-                        {props.state.isInProgress && <Button type="default" onClick={onStopButtonClickHandler}> STOP </Button>}
+                        {props.state.isInProgress &&
+                            <Button type="default" onClick={onStopButtonClickHandler}> STOP </Button>}
 
                     </Form.Item>
                 </Form>
