@@ -1,12 +1,17 @@
 import React, {useState} from 'react'
 import Timer from "react-compound-timer";
-import {SettingsType} from "../ContainersPropsCreator";
 import {Button} from "antd";
-import {Metronome} from "../Metronome/Metronome";
+import {RootState, useAppDispatch} from "../../store/store";
+import {useSelector} from "react-redux";
+import {stopProgress, switchPause} from "../../store/slices/settings/slice";
 
 // https://volkov97.github.io/react-compound-timer/
 
-export const MyTimer: React.FC<SettingsType> = (props) => {
+export const MyTimer: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const settingsState = useSelector((state: RootState) => state.settings);
+
+
     const [currentIndex, setCurrentIndex] = useState<number>(0)
     const [nextIndex, setNextIndex] = useState<number>(0)
     const [id, setId] = useState<number>(0)
@@ -18,22 +23,23 @@ export const MyTimer: React.FC<SettingsType> = (props) => {
     React.useEffect(() => {
         console.log("use effect");
         myInterval = window.setInterval(() => {
-            if (props.state.isInProgress && !props.state.isPaused) {
+            if (settingsState.isInProgress && !settingsState.isPaused) {
                 setNextIndex((prevValue) => {
                     setCurrentIndex(prevValue);
-                    return Math.floor(Math.random() * props.state.presetElementsToDisplay.length)
+                    // return Math.floor(Math.random() * settingsState.presetElementsToDisplay.length)
+                    return 2;
                 });
             }
-        }, props.state.interval * 1000);
+        }, settingsState.interval * 1000);
         console.log("interva", myInterval);
         setId(myInterval);
-    }, [props.state.isInProgress, props.state.interval])
+    }, [settingsState.isInProgress, settingsState.interval])
 
     document.addEventListener("keypress", (event) => {
         if (event.code === 'Space') {
             console.log("key event")
-            props.switchPause();
-            if (props.state.isPaused) {
+            // props.switchPause();
+            if (settingsState.isPaused) {
 
             } else {
                 pauseMethod();
@@ -43,24 +49,26 @@ export const MyTimer: React.FC<SettingsType> = (props) => {
 
     const onStop = () => {
         window.clearInterval(id);
-        props.stop();
+        dispatch(stopProgress());
     }
 
     return (
         <>
-            {props.state.isInProgress
+            {settingsState.isInProgress
                 ? <div>
                     test
                     <Button type="default" onClick={() => onStop()}> STOP </Button>
 
                     <Timer
-                        initialTime={props.state.trainingPeriod * 1000 * 60}
+                        initialTime={settingsState.trainingPeriod * 1000 * 60}
                         startImmediately={true}
                         direction={"backward"}
                         onStart={() => console.log("on start hook")}
-                        onPause={() => props.switchPause()}
-                        onResume={() => props.switchPause()}
-                        onStop={() => {onStop()}}
+                        onPause={() => dispatch(switchPause())}
+                        onResume={() => dispatch(switchPause())}
+                        onStop={() => {
+                            onStop()
+                        }}
                         checkpoints={[
                             {
                                 time: 0,
@@ -91,9 +99,10 @@ export const MyTimer: React.FC<SettingsType> = (props) => {
                             </React.Fragment>
                         )}
                     </Timer>
-                    {props.state.isInProgress && !props.state.isPaused
+                    {settingsState.isInProgress && !settingsState.isPaused
                         &&
-                        <h1>{props.state.presetElementsToDisplay[currentIndex].elementValue} - {props.state.presetElementsToDisplay[nextIndex].elementValue}</h1>}
+                        // <h1>{settingsState.presetElementsToDisplay[currentIndex].elementValue} - {settingsState.presetElementsToDisplay[nextIndex].elementValue}</h1>}
+                        <h1>test</h1>}
 
                 </div> : null
             }

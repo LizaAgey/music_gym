@@ -1,20 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import styles from './Sidebar.module.css'
-import {SettingsType} from '../ContainersPropsCreator';
 import {Button, Form, InputNumber, Select, Slider, Switch} from 'antd';
-import {PresetGroupType, presetsInitialData} from '../../data/presetsInitialData';
-import {Metronome} from "../Metronome/Metronome";
+import {presetsInitialData} from '../../data/presetsInitialData';
+import {RootState, useAppDispatch} from "../../store/store";
+import {initPresets, setPreset, saveSettings, stopProgress} from "../../store/slices/settings/slice";
+import {PresetType} from "../../store/slices/settings/types";
+import {useSelector} from "react-redux";
 
-type FormSettingsValuesType = {
+
+export type FormSettingsValuesType = {
     presetName: string,
     trainingPeriod: number,
     interval: number,
     soundMode: boolean
 }
 
-export const Sidebar: React.FC<SettingsType> = (props) => {
+export const Sidebar: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const settingsState = useSelector((state: RootState) => state.settings);
+
     useEffect(() => {
-        props.setPresetsDataToStore(presetsInitialData)
+        dispatch(initPresets(presetsInitialData));
     }, [])
 
     const formItemLayout = {
@@ -24,17 +30,16 @@ export const Sidebar: React.FC<SettingsType> = (props) => {
     const {Option} = Select;
 
     const onPresetSelectChangeHandler = (currentPresetName: string) => {
-        let currentPresetId = props.state.presetsInitialData.find(presetGroup => presetGroup.presetName === currentPresetName)?.presetId
-        currentPresetId && props.setSettingsPresetId(currentPresetId)
+        let find = settingsState.presetsInitialData.find(p => p.name === currentPresetName);
+        find && dispatch(setPreset(find));
     }
 
     const onStartButtonHandler = (formValues: FormSettingsValuesType) => {
-        props.saveSettings(formValues.trainingPeriod, formValues.interval, formValues.soundMode)
-        props.start()
+        dispatch(saveSettings(formValues))
     };
 
     const onStopButtonClickHandler = () => {
-        props.stop()
+        dispatch(stopProgress())
     };
 
     return (
@@ -45,36 +50,42 @@ export const Sidebar: React.FC<SettingsType> = (props) => {
 
                 <Form{...formItemLayout}
                      onFinish={onStartButtonHandler}
-                     initialValues={{'trainingPeriod': 2, 'soundMode': true, 'interval': 3}}
+                     initialValues={{
+                         'trainingPeriod': 2,
+                         'soundMode': settingsState.isSoundOn,
+                         'preset': 'Preset 1',
+                         'interval': 3,
+                         'beats': 4
+                     }}
                      style={{maxWidth: 600}}>
 
                     <Form.Item
-                        name="presetName"
+                        name="preset"
                         label="Preset"
                         hasFeedback
                         rules={[{required: true, message: 'Please select a preset!'}]}>
 
                         <Select
-                            defaultValue={props.state.presetsInitialData.length > 0 ? props.state.presetsInitialData[1].presetName : null}
                             onChange={onPresetSelectChangeHandler}
                             placeholder="Please select a preset">
-                            {props.state.presetsInitialData.map((preset: PresetGroupType) => {
-                                return <Option value={preset.presetName}
-                                               id={preset.presetId}
-                                               key={preset.presetId}
-                                >{preset.presetName}</Option>
+                            {settingsState.presetsInitialData.map((preset: PresetType) => {
+                                return <Option value={preset.name}
+                                               id={preset.id}
+                                               key={preset.id}
+                                >{preset.name}</Option>
                             })}
                         </Select>
 
 
                     </Form.Item>
 
-                    {props.state.presetId !== ''
+                    {settingsState.preset?.id
                         ? <div>
                             Included in the preset:
-                            <ul>{props.state.presetsInitialData.find(preset => preset.presetId === props.state.presetId)?.presetElements.map((element) => {
-                                return <li key={element.elementId}>{element.elementValue}</li>
-                            })}</ul>
+                            <ul>{settingsState.presetsInitialData.find(preset => preset.id === settingsState.preset?.id)?.elements
+                                .map((element) => {
+                                    return <li key={element.id}>{element.value}</li>
+                                })}</ul>
 
                         </div>
                         : null}
@@ -85,16 +96,24 @@ export const Sidebar: React.FC<SettingsType> = (props) => {
                         </Form.Item>
                     </Form.Item>
 
+                    <Form.Item name="bpm" label="BPM">
+                        <Slider min={20} max={240} defaultValue={120} tooltip={{open: true}}/>
+                    </Form.Item>
+
+                    <Form.Item label="Beats">
+                        <Form.Item name="beats" noStyle>
+                            <InputNumber min={1} max={8}/>
+                        </Form.Item>
+                    </Form.Item>
+
                     <Form.Item name="soundMode" label="Sound" valuePropName="checked">
                         <Switch/>
                     </Form.Item>
 
-                    <Metronome/>
-
                     <Form.Item wrapperCol={{span: 12, offset: 6}}>
                         <Button type="primary" htmlType="submit"> START </Button>
 
-                        {props.state.isInProgress &&
+                        {settingsState.isInProgress &&
                             <Button type="default" onClick={onStopButtonClickHandler}> STOP </Button>}
 
                     </Form.Item>

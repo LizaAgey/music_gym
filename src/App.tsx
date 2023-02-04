@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import Grid from '@mui/material/Grid';
-import SidebarContainer from './components/Sidebar/SidebarContainer';
-import MyTimerContainer from "./components/Timer/MyTimerContainer";
+import {Sidebar} from "./components/Sidebar/Sidebar";
+import {MyTimer} from "./components/Timer/MyTimer";
 
 
 function App() {
@@ -10,10 +10,10 @@ function App() {
         <div className="App">
             <Grid container spacing={0}>
                 <Grid item xs={4}>
-                    <SidebarContainer/>
+                    <Sidebar/>
                 </Grid>
                 <Grid item xs={8}>
-                    <MyTimerContainer/>
+                    <MyTimer/>
                 </Grid>
             </Grid>
         </div>
@@ -21,17 +21,3 @@ function App() {
 }
 
 export default App;
-
-/*
-const onKeyUpHandler = (event: KeyboardEvent<HTMLDivElement>) => {
-
-    for (let i = 0; i < props.items.length; i++) {
-
-        if (event.key === 'Escape' || event.key === 'Enter') {
-            setExpanded(false)
-        }
-    }
-};
-
-<div className={styles.selectWrapper} tabIndex={0} onKeyUp={onKeyUpHandler}>
-*/
