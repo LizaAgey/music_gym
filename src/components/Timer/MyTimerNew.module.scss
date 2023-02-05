@@ -1,0 +1,39 @@
+.displayContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    .current {
+        .note {
+            font-size: 570px;
+        }
+        .chord {
+            font-size: 270px;
+        }
+        padding-right: 100px;
+    }
+    .next {
+        .note {
+            font-size: 100px;
+        }
+        .chord {
+            font-size: 70px;
+        }
+    }
+}
+
+.elements {
+    width:300px
+}
+
+.displayedValue {
+    top: 50%;
+    right: 50%;
+    color: #457b9d;
+    font-size: 260px;
+}
+
+.logo {
+    width: 230px;
+    height: 230px;
+}

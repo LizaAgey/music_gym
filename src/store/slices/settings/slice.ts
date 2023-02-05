@@ -1,20 +1,22 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {PresetType, SettingsPageType} from "./types";
+import {PresetMode, PresetType, SettingsPageType} from "./types";
 import {FormSettingsValuesType} from "../../../components/Sidebar/Sidebar";
 
 export const initialState: SettingsPageType = {
     preset: {
         id: 0,
         name: 'Preset 1',
-        elements: []
+        elements: [],
+        type: PresetMode.UNDEFINED
     },
     trainingPeriod: 3,
     bpm: 120,
     beats: 4,
     interval: 2,
     isInProgress: false,
-    isSoundOn: false,
+    isSoundOn: true,
     isPaused: false,
+    isShowNext: false,
     presetsInitialData: []
 }
 
@@ -27,6 +29,7 @@ const settingsSlice = createSlice({
         },
         stopProgress(state) {
             state.isInProgress = false;
+            state.isPaused = false;
         },
         switchPause(state) {
             state.isPaused = !state.isPaused;
@@ -38,6 +41,7 @@ const settingsSlice = createSlice({
             state.isInProgress = true;
             state.bpm = action.payload.bpm;
             state.isSoundOn = action.payload.soundMode;
+            state.isShowNext = action.payload.isShowNext;
         }
     }
 });

@@ -6,6 +6,7 @@ export type SettingsPageType = {
     isInProgress: boolean
     isSoundOn: boolean
     isPaused: boolean
+    isShowNext: boolean
     preset: PresetType
     presetsInitialData: Array<PresetType>
 }
@@ -13,6 +14,7 @@ export type SettingsPageType = {
 export type PresetType = {
     id: number
     name: string
+    type: PresetMode
     elements: Array<PresetElementType>
 }
 
@@ -20,4 +22,8 @@ export type PresetElementType = {
     id: number
     value: string
     sound: string
+}
+
+export enum PresetMode {
+    NOTE, CHORD, UNDEFINED
 }

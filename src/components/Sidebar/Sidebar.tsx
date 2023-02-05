@@ -1,11 +1,13 @@
 import React, {useEffect} from 'react';
 import styles from './Sidebar.module.css'
-import {Button, Form, InputNumber, Select, Slider, Switch} from 'antd';
+import {Button, Form, Select, Slider, Switch} from 'antd';
 import {presetsInitialData} from '../../data/presetsInitialData';
 import {RootState, useAppDispatch} from "../../store/store";
 import {initPresets, saveSettings, setPreset, stopProgress} from "../../store/slices/settings/slice";
 import {PresetType} from "../../store/slices/settings/types";
 import {useSelector} from "react-redux";
+import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
 export type FormSettingsValuesType = {
@@ -14,9 +16,11 @@ export type FormSettingsValuesType = {
     interval: number,
     bpm: number,
     soundMode: boolean
+    isShowNext: boolean
 }
 
 export const Sidebar: React.FC = () => {
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const settingsState = useSelector((state: RootState) => state.settings);
 
@@ -37,6 +41,7 @@ export const Sidebar: React.FC = () => {
 
     const onStartButtonHandler = (formValues: FormSettingsValuesType) => {
         dispatch(saveSettings(formValues))
+        navigate('/progress');
     };
 
     const onStopButtonClickHandler = () => {
@@ -54,6 +59,7 @@ export const Sidebar: React.FC = () => {
                      initialValues={{
                          'trainingPeriod': 2,
                          'soundMode': settingsState.isSoundOn,
+                         'isShowNext': settingsState.isShowNext,
                          'interval': 3,
                          'beats': 4,
                          'bpm': settingsState.bpm
@@ -89,7 +95,7 @@ export const Sidebar: React.FC = () => {
                         </div>
                         : null}*/}
 
-{/*                    <Form.Item label="Training time, min">
+                    {/*                    <Form.Item label="Training time, min">
                         <Form.Item name="trainingPeriod" noStyle>
                             <InputNumber min={1} max={20}/>
                         </Form.Item>
@@ -106,6 +112,10 @@ export const Sidebar: React.FC = () => {
                     </Form.Item>*/}
 
                     <Form.Item name="soundMode" label="Sound" valuePropName="checked">
+                        <Switch/>
+                    </Form.Item>
+
+                    <Form.Item name="isShowNext" label="Show next element" valuePropName="checked">
                         <Switch/>
                     </Form.Item>
 

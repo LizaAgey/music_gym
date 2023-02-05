@@ -1,22 +1,20 @@
 import React from 'react';
 import './App.css';
-import Grid from '@mui/material/Grid';
-import {Sidebar} from "./components/Sidebar/Sidebar";
-import {MyTimerNew} from "./components/Timer/MyTimerNew";
+import {Route, Routes} from "react-router-dom";
+import SettingsPage from "./page/SettingsPage";
+import InProgressPage from "./page/InProgressPage";
 
 
 function App() {
     return (
-        <div className="App">
-            <Grid container spacing={0}>
-                <Grid item xs={4}>
-                    <Sidebar/>
-                </Grid>
-                <Grid item xs={8}>
-                    <MyTimerNew/>
-                </Grid>
-            </Grid>
-        </div>
+        <>
+            <div className="app">
+                <Routes>
+                    <Route path="/" element={<SettingsPage/>}/>
+                    <Route path="/progress" element={<InProgressPage/>}/>
+                </Routes>
+            </div>
+        </>
     );
 }
 

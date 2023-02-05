@@ -25,6 +25,7 @@
     "react-compound-timer": "^1.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "7.2.6",
+    "react-router-dom": "^6.8.0",
     "react-scripts": "5.0.1",
     "redux": "4.1.2",
     "styled-components": "^5.3.6",
@@ -57,6 +58,8 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-react-app": "^7.0.1"
+    "@types/node-sass": "^4.11.3",
+    "eslint-config-react-app": "^7.0.1",
+    "node-sass": "^8.0.0"
   }
 }

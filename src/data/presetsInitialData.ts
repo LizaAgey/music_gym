@@ -1,29 +1,38 @@
-import { v1 } from "uuid";
-import {PresetType} from "../store/slices/settings/types";
+import {PresetMode, PresetType} from "../store/slices/settings/types";
 
 export const presetsInitialData: Array<PresetType>  = [
     {
         id: 1,
+        name: 'All notes with sharps',
+        type: PresetMode.NOTE,
         elements: [
-            {id: 1, value: 'кошка', sound: './sounds/cat.wav'},
-            {id: 2, value: 'собака', sound: './sounds/dog.wav'},
-            {id: 3, value: 'дятел', sound: './sounds/dog.wav'},
-            {id: 4, value: 'козел', sound: './sounds/dog.wav'},
-            {id: 5, value: 'обезьяна', sound: './sounds/dog.wav'},
-            {id: 6, value: 'жопа', sound: './sounds/dog.wav'},
-            {id: 7, value: 'сиська', sound: './sounds/frog.wav'},
-            {id: 8, value: 'жорка', sound: './sounds/sheep.mp3'},
-        ],
-        name: 'Preset 1'
+            {id: 1, value: 'C', sound: ''},
+            {id: 2, value: 'C#', sound: ''},
+            {id: 3, value: 'D', sound: ''},
+            {id: 4, value: 'D#', sound: ''},
+            {id: 5, value: 'E', sound: ''},
+            {id: 6, value: 'F', sound: ''},
+            {id: 7, value: 'F#', sound: ''},
+            {id: 8, value: 'G', sound: ''},
+            {id: 9, value: 'G#', sound: ''},
+            {id: 10, value: 'A', sound: ''},
+            {id: 11, value: 'A#', sound: ''},
+            {id: 12, value: 'B', sound: ''},
+        ]
     },
     {
         id: 2,
+        name: 'All clean notes',
+        type: PresetMode.NOTE,
         elements: [
-            {id: 1, value: 'cat_2', sound: './sounds/cat.wav'},
-            {id: 2, value: 'dog_2', sound: './sounds/dog.wav'},
-            {id: 3, value: 'frog_2', sound: './sounds/frog.wav'},
-            {id: 4, value: 'sheep_2', sound: './sounds/sheep.mp3'},
-        ],
-        name: 'Preset 2'
-    }
+            {id: 1, value: 'C', sound: ''},
+            {id: 3, value: 'D', sound: ''},
+            {id: 5, value: 'E', sound: ''},
+            {id: 6, value: 'F', sound: ''},
+            {id: 8, value: 'G', sound: ''},
+            {id: 10, value: 'A', sound: ''},
+            {id: 12, value: 'B', sound: ''}
+        ]
+    },
+
 ]

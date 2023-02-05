@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {RootState, useAppDispatch} from "../../store/store";
 import {useSelector} from "react-redux";
 import {stopProgress} from "../../store/slices/settings/slice";
-import styles from './MyTimerNew.module.css'
+import styles from './MyTimerNew.module.scss'
 
 
 // https://volkov97.github.io/react-compound-timer/
@@ -13,6 +13,7 @@ export const MyTimerNew: React.FC = () => {
 
     const click1: HTMLMediaElement = new Audio('./sounds/metronome/click1.mp3');
     const click2: HTMLMediaElement = new Audio('./sounds/metronome/click2.mp3');
+    // const click2: HTMLMediaElement = new Audio('./sounds/notes/C_stretched.wav');
 
     let [count, setCount] = React.useState<number>(0);
 
@@ -21,7 +22,6 @@ export const MyTimerNew: React.FC = () => {
     const [myTimeout, setMyTimeout] = useState<NodeJS.Timeout>()
 
     const doWork = () => {
-        console.log(currentIndex, nextIndex);
         setCount(c => {
             let innerCount = c;
             if (innerCount === settingsState.beats) {
@@ -71,11 +71,20 @@ export const MyTimerNew: React.FC = () => {
         <>
             {settingsState.isInProgress
                 ? <div className={styles.displayContainer}>
-                    CURRENT - {settingsState.preset?.elements[currentIndex].value}
-                    <br/>
-                    NEXT - {settingsState.preset?.elements[nextIndex].value}
-                </div> : null
-            }
+                    <div className={styles.current}>
+                        <div className={styles.note}>
+                            {settingsState.preset?.elements[currentIndex].value}
+                        </div>
+                    </div>
+                    {settingsState.isShowNext &&
+                        <div className={styles.next}>
+                            <div className={styles.note}>
+                                {settingsState.preset?.elements[nextIndex].value}
+                            </div>
+                        </div>}
+                </div>
+                : null}
+
         </>
     );
 }
