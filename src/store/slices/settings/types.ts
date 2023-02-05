@@ -2,10 +2,11 @@ export type SettingsPageType = {
     trainingPeriod: number
     interval: number
     beats: number
+    bpm: number
     isInProgress: boolean
     isSoundOn: boolean
     isPaused: boolean
-    preset: PresetType | null
+    preset: PresetType
     presetsInitialData: Array<PresetType>
 }
 

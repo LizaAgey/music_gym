@@ -3,8 +3,13 @@ import {PresetType, SettingsPageType} from "./types";
 import {FormSettingsValuesType} from "../../../components/Sidebar/Sidebar";
 
 export const initialState: SettingsPageType = {
-    preset: null,
+    preset: {
+        id: 0,
+        name: 'Preset 1',
+        elements: []
+    },
     trainingPeriod: 3,
+    bpm: 120,
     beats: 4,
     interval: 2,
     isInProgress: false,
@@ -30,7 +35,9 @@ const settingsSlice = createSlice({
             state.preset = action.payload;
         },
         saveSettings(state, action: PayloadAction<FormSettingsValuesType>) {
-            action.payload;
+            state.isInProgress = true;
+            state.bpm = action.payload.bpm;
+            state.isSoundOn = action.payload.soundMode;
         }
     }
 });

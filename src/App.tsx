@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Grid from '@mui/material/Grid';
 import {Sidebar} from "./components/Sidebar/Sidebar";
-import {MyTimer} from "./components/Timer/MyTimer";
+import {MyTimerNew} from "./components/Timer/MyTimerNew";
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
                     <Sidebar/>
                 </Grid>
                 <Grid item xs={8}>
-                    <MyTimer/>
+                    <MyTimerNew/>
                 </Grid>
             </Grid>
         </div>

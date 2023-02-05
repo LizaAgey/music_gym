@@ -3,7 +3,7 @@ import styles from './Sidebar.module.css'
 import {Button, Form, InputNumber, Select, Slider, Switch} from 'antd';
 import {presetsInitialData} from '../../data/presetsInitialData';
 import {RootState, useAppDispatch} from "../../store/store";
-import {initPresets, setPreset, saveSettings, stopProgress} from "../../store/slices/settings/slice";
+import {initPresets, saveSettings, setPreset, stopProgress} from "../../store/slices/settings/slice";
 import {PresetType} from "../../store/slices/settings/types";
 import {useSelector} from "react-redux";
 
@@ -12,6 +12,7 @@ export type FormSettingsValuesType = {
     presetName: string,
     trainingPeriod: number,
     interval: number,
+    bpm: number,
     soundMode: boolean
 }
 
@@ -53,9 +54,9 @@ export const Sidebar: React.FC = () => {
                      initialValues={{
                          'trainingPeriod': 2,
                          'soundMode': settingsState.isSoundOn,
-                         'preset': 'Preset 1',
                          'interval': 3,
-                         'beats': 4
+                         'beats': 4,
+                         'bpm': settingsState.bpm
                      }}
                      style={{maxWidth: 600}}>
 
@@ -75,11 +76,9 @@ export const Sidebar: React.FC = () => {
                                 >{preset.name}</Option>
                             })}
                         </Select>
-
-
                     </Form.Item>
 
-                    {settingsState.preset?.id
+                    {/*                    {settingsState.preset?.id
                         ? <div>
                             Included in the preset:
                             <ul>{settingsState.presetsInitialData.find(preset => preset.id === settingsState.preset?.id)?.elements
@@ -88,23 +87,23 @@ export const Sidebar: React.FC = () => {
                                 })}</ul>
 
                         </div>
-                        : null}
+                        : null}*/}
 
-                    <Form.Item label="Training time, min">
+{/*                    <Form.Item label="Training time, min">
                         <Form.Item name="trainingPeriod" noStyle>
                             <InputNumber min={1} max={20}/>
                         </Form.Item>
-                    </Form.Item>
+                    </Form.Item>*/}
 
                     <Form.Item name="bpm" label="BPM">
-                        <Slider min={20} max={240} defaultValue={120} tooltip={{open: true}}/>
+                        <Slider min={20} max={240} tooltip={{open: true}}/>
                     </Form.Item>
 
-                    <Form.Item label="Beats">
+                    {/*                    <Form.Item label="Beats">
                         <Form.Item name="beats" noStyle>
                             <InputNumber min={1} max={8}/>
                         </Form.Item>
-                    </Form.Item>
+                    </Form.Item>*/}
 
                     <Form.Item name="soundMode" label="Sound" valuePropName="checked">
                         <Switch/>
