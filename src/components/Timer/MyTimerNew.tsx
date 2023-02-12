@@ -24,6 +24,7 @@ export const MyTimerNew: React.FC = () => {
     const doWork = () => {
         setCount(c => {
             let innerCount = c;
+
             if (innerCount === settingsState.beats) {
                 innerCount = 0;
             }
@@ -32,8 +33,21 @@ export const MyTimerNew: React.FC = () => {
                 click2.currentTime = 0;
                 // Show new element on strong beat
                 setNextIndex((prevValue) => {
-                    setCurrentIndex(prevValue);
-                    return Math.floor(Math.random() * settingsState.preset.elements.length);
+                    if (settingsState.isRandom) {
+                        setCurrentIndex(prevValue);
+                        let nextIndex: number = Math.floor(Math.random() * settingsState.preset.elements.length);
+                        if (nextIndex === prevValue) {
+                            nextIndex = Math.floor(Math.random() * settingsState.preset.elements.length);
+                        }
+                        return nextIndex
+                    } else {
+                        setCurrentIndex(prevValue);
+                        if (prevValue === settingsState.rawElements.length - 1) {
+                            return 0;
+                        } else {
+                            return prevValue + 1;
+                        }
+                    }
                 });
             } else {
                 settingsState.isSoundOn && click1.play();
@@ -73,13 +87,13 @@ export const MyTimerNew: React.FC = () => {
                 ? <div className={styles.displayContainer}>
                     <div className={styles.current}>
                         <div className={styles.note}>
-                            {settingsState.preset?.elements[currentIndex].value}
+                            {settingsState.rawElements?.[currentIndex]}
                         </div>
                     </div>
                     {settingsState.isShowNext &&
                         <div className={styles.next}>
                             <div className={styles.note}>
-                                {settingsState.preset?.elements[nextIndex].value}
+                                {settingsState.rawElements?.[nextIndex]}
                             </div>
                         </div>}
                 </div>

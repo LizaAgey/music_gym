@@ -1,19 +1,19 @@
 import React from 'react';
-import Grid from "@mui/material/Grid";
 import {Sidebar} from "../components/Sidebar/Sidebar";
 import {PresetElementsList} from "../components/PresetElementsList/PresetElementsList";
+import {Col, Row} from 'antd';
 
 function SettingsPage() {
     return (
         <>
-            <Grid container spacing={0}>
-                <Grid item xs={4}>
+            <Row>
+                <Col span={12}>
                     <Sidebar/>
-                </Grid>
-                <Grid item xs={8}>
+                </Col>
+                <Col span={12}>
                     <PresetElementsList/>
-                </Grid>
-            </Grid>
+                </Col>
+            </Row>
         </>
     );
 }

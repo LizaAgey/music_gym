@@ -9,6 +9,7 @@ export const initialState: SettingsPageType = {
         elements: [],
         type: PresetMode.UNDEFINED
     },
+    rawElements: [],
     trainingPeriod: 3,
     bpm: 120,
     beats: 4,
@@ -16,6 +17,7 @@ export const initialState: SettingsPageType = {
     isInProgress: false,
     isSoundOn: true,
     isPaused: false,
+    isRandom: false,
     isShowNext: false,
     presetsInitialData: []
 }
@@ -42,6 +44,8 @@ const settingsSlice = createSlice({
             state.bpm = action.payload.bpm;
             state.isSoundOn = action.payload.soundMode;
             state.isShowNext = action.payload.isShowNext;
+            state.rawElements = action.payload.elements.split("\n");
+            state.isRandom = action.payload.isRandom;
         }
     }
 });

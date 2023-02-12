@@ -7,6 +7,8 @@ export type SettingsPageType = {
     isSoundOn: boolean
     isPaused: boolean
     isShowNext: boolean
+    isRandom: boolean
+    rawElements: Array<string>
     preset: PresetType
     presetsInitialData: Array<PresetType>
 }

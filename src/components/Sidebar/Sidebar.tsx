@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import styles from './Sidebar.module.css'
-import {Button, Form, Select, Slider, Switch} from 'antd';
+import {Button, Col, Form, InputNumber, Row, Select, Slider, Switch} from 'antd';
 import {presetsInitialData} from '../../data/presetsInitialData';
 import {RootState, useAppDispatch} from "../../store/store";
 import {initPresets, saveSettings, setPreset, stopProgress} from "../../store/slices/settings/slice";
 import {PresetType} from "../../store/slices/settings/types";
 import {useSelector} from "react-redux";
-import {Link} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
+import TextArea from "antd/es/input/TextArea";
 
 
 export type FormSettingsValuesType = {
@@ -16,13 +16,27 @@ export type FormSettingsValuesType = {
     interval: number,
     bpm: number,
     soundMode: boolean
-    isShowNext: boolean
+    isShowNext: boolean,
+    elements: string
+    isRandom: boolean
 }
 
 export const Sidebar: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const settingsState = useSelector((state: RootState) => state.settings);
+
+    const [bpm, setBpm] = React.useState<number | null>(120);
+
+    const onChange = (newValue: number | null) => {
+        setBpm(newValue);
+    };
+
+    const [form] = Form.useForm();
+
+    useEffect(() => {
+        form.setFieldValue("elements", settingsState.preset?.elements.map(el => el.value).join('\n'))
+    }, [settingsState.preset])
 
     useEffect(() => {
         dispatch(initPresets(presetsInitialData));
@@ -40,12 +54,9 @@ export const Sidebar: React.FC = () => {
     }
 
     const onStartButtonHandler = (formValues: FormSettingsValuesType) => {
+        formValues.bpm = bpm ? bpm : 0;
         dispatch(saveSettings(formValues))
         navigate('/progress');
-    };
-
-    const onStopButtonClickHandler = () => {
-        dispatch(stopProgress())
     };
 
     return (
@@ -56,6 +67,7 @@ export const Sidebar: React.FC = () => {
 
                 <Form{...formItemLayout}
                      onFinish={onStartButtonHandler}
+                     form={form}
                      initialValues={{
                          'trainingPeriod': 2,
                          'soundMode': settingsState.isSoundOn,
@@ -68,9 +80,7 @@ export const Sidebar: React.FC = () => {
 
                     <Form.Item
                         name="preset"
-                        label="Preset"
-                        hasFeedback
-                        rules={[{required: true, message: 'Please select a preset!'}]}>
+                        label="Preset">
 
                         <Select
                             onChange={onPresetSelectChangeHandler}
@@ -84,32 +94,25 @@ export const Sidebar: React.FC = () => {
                         </Select>
                     </Form.Item>
 
-                    {/*                    {settingsState.preset?.id
-                        ? <div>
-                            Included in the preset:
-                            <ul>{settingsState.presetsInitialData.find(preset => preset.id === settingsState.preset?.id)?.elements
-                                .map((element) => {
-                                    return <li key={element.id}>{element.value}</li>
-                                })}</ul>
-
-                        </div>
-                        : null}*/}
-
-                    {/*                    <Form.Item label="Training time, min">
-                        <Form.Item name="trainingPeriod" noStyle>
-                            <InputNumber min={1} max={20}/>
-                        </Form.Item>
-                    </Form.Item>*/}
-
                     <Form.Item name="bpm" label="BPM">
-                        <Slider min={20} max={240} tooltip={{open: true}}/>
+                        <Row>
+                            <Col span={12}>
+                                <Slider
+                                    min={20} max={240}
+                                    onChange={onChange}
+                                    value={typeof bpm === 'number' ? bpm : 0}
+                                />
+                            </Col>
+                            <Col span={4}>
+                                <InputNumber
+                                    min={20} max={240}
+                                    style={{margin: '0 16px'}}
+                                    value={bpm}
+                                    onChange={onChange}
+                                />
+                            </Col>
+                        </Row>
                     </Form.Item>
-
-                    {/*                    <Form.Item label="Beats">
-                        <Form.Item name="beats" noStyle>
-                            <InputNumber min={1} max={8}/>
-                        </Form.Item>
-                    </Form.Item>*/}
 
                     <Form.Item name="soundMode" label="Sound" valuePropName="checked">
                         <Switch/>
@@ -119,13 +122,19 @@ export const Sidebar: React.FC = () => {
                         <Switch/>
                     </Form.Item>
 
-                    <Form.Item wrapperCol={{span: 12, offset: 6}}>
-                        <Button type="primary" htmlType="submit"> START </Button>
-
-                        {settingsState.isInProgress &&
-                            <Button type="default" onClick={onStopButtonClickHandler}> STOP </Button>}
-
+                    <Form.Item name="isRandom" label="Random order" valuePropName="checked">
+                        <Switch/>
                     </Form.Item>
+
+                    <Form.Item wrapperCol={{span: 12, offset: 6}}>
+                        <Button type="primary" htmlType="submit" block> START </Button>
+                    </Form.Item>
+
+                    <Form.Item name="elements" label="Elements">
+                        <TextArea rows={8}
+                                  defaultValue={settingsState.preset?.elements.map(el => el.value).join('\n')}/>
+                    </Form.Item>
+
                 </Form>
             </div>
         </div>

@@ -34,5 +34,15 @@ export const presetsInitialData: Array<PresetType>  = [
             {id: 12, value: 'B', sound: ''}
         ]
     },
+    {
+        id: 3,
+        name: 'Test preset',
+        type: PresetMode.NOTE,
+        elements: [
+            {id: 1, value: 'жопа', sound: ''},
+            {id: 3, value: 'цыцка', sound: ''},
+            {id: 5, value: 'сиська', sound: ''}
+        ]
+    },
 
 ]
