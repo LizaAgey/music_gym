@@ -16,45 +16,52 @@ export const MyTimerNew: React.FC = () => {
     // const click2: HTMLMediaElement = new Audio('./sounds/notes/C_stretched.wav');
 
     let [count, setCount] = React.useState<number>(0);
+    let [isPaused, setIsPaused] = React.useState<boolean>(false);
 
     const [currentIndex, setCurrentIndex] = useState<number>(0)
     const [nextIndex, setNextIndex] = useState<number>(0)
     const [myTimeout, setMyTimeout] = useState<NodeJS.Timeout>()
 
     const doWork = () => {
-        setCount(c => {
-            let innerCount = c;
+        setIsPaused(isPaused => {
+            if (!isPaused) {
+                setCount(c => {
+                    let innerCount = c;
 
-            if (innerCount === settingsState.beats) {
-                innerCount = 0;
-            }
-            if (innerCount === 0) {
-                settingsState.isSoundOn && click2.play();
-                click2.currentTime = 0;
-                // Show new element on strong beat
-                setNextIndex((prevValue) => {
-                    if (settingsState.isRandom) {
-                        setCurrentIndex(prevValue);
-                        let nextIndex: number = Math.floor(Math.random() * settingsState.preset.elements.length);
-                        if (nextIndex === prevValue) {
-                            nextIndex = Math.floor(Math.random() * settingsState.preset.elements.length);
-                        }
-                        return nextIndex
-                    } else {
-                        setCurrentIndex(prevValue);
-                        if (prevValue === settingsState.rawElements.length - 1) {
-                            return 0;
-                        } else {
-                            return prevValue + 1;
-                        }
+                    if (innerCount === settingsState.beats) {
+                        innerCount = 0;
                     }
+                    if (innerCount === 0) {
+                        settingsState.isSoundOn && click2.play();
+                        click2.currentTime = 0;
+                        // Show new element on strong beat
+                        setNextIndex((prevValue) => {
+                            if (settingsState.isRandom) {
+                                setCurrentIndex(prevValue);
+                                let nextIndex: number = Math.floor(Math.random() * settingsState.preset.elements.length);
+                                if (nextIndex === prevValue) {
+                                    nextIndex = Math.floor(Math.random() * settingsState.preset.elements.length);
+                                }
+                                return nextIndex
+                            } else {
+                                setCurrentIndex(prevValue);
+                                if (prevValue === settingsState.rawElements.length - 1) {
+                                    return 0;
+                                } else {
+                                    return prevValue + 1;
+                                }
+                            }
+                        });
+                    } else {
+                        settingsState.isSoundOn && click1.play();
+                        click1.currentTime = 0;
+                    }
+                    return innerCount + 1;
                 });
-            } else {
-                settingsState.isSoundOn && click1.play();
-                click1.currentTime = 0;
             }
-            return innerCount + 1;
-        });
+            return isPaused;
+        })
+
     }
 
     const startThread = () => {
@@ -80,6 +87,10 @@ export const MyTimerNew: React.FC = () => {
             dispatch(stopProgress());
         }
     }, [settingsState.isInProgress]);
+
+    React.useEffect(() => {
+        setIsPaused(settingsState.isPaused);
+    }, [settingsState.isPaused]);
 
     return (
         <>

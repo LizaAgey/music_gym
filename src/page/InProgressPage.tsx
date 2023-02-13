@@ -1,25 +1,75 @@
 import React from 'react';
-import {Button} from "antd";
+import {Button, Row} from "antd";
 import {MyTimerNew} from "../components/Timer/MyTimerNew";
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../store/store";
-import {stopProgress} from "../store/slices/settings/slice";
+import {RootState, useAppDispatch} from "../store/store";
+import {stopProgress, switchPause} from "../store/slices/settings/slice";
+import {PauseCircleTwoTone} from "@mui/icons-material";
+import {useSelector} from "react-redux";
+import Timer from "react-compound-timer";
 
 
 function InProgressPage() {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const settingsState = useSelector((state: RootState) => state.settings);
+
+    let pauseTimer: Function;
+    let resumeTimer: Function;
+
 
     const onStopHandler = () => {
         dispatch(stopProgress());
         navigate('/');
     }
 
+    const handler = (e: KeyboardEvent) => {
+        if (e.keyCode === 32) { // SPACE
+            e.stopPropagation();
+            e.preventDefault();
+            dispatch(switchPause());
+        }
+    };
+
+    React.useEffect(() => {
+        window.addEventListener('keydown', handler, false);
+        return () => window.removeEventListener('keydown', handler, false);
+    }, []);
+
+    React.useEffect(() => {
+        if (settingsState.isPaused) {
+            pauseTimer();
+        } else {
+            resumeTimer();
+        }
+    }, [settingsState.isPaused]);
+
     return (
         <>
             <div>
-                <Button onClick={onStopHandler} danger>STOP</Button>
+                <Row>
+                    <Button onClick={onStopHandler} danger>STOP</Button>
+                    {settingsState.isPaused && <PauseCircleTwoTone/>}
+
+                    <Timer initialTime={0}
+                           startImmediately={true}
+                           direction={"forward"}>
+                        {/*@ts-ignore*/}
+                        {({resume, pause}) => (
+                            <React.Fragment>
+                                {pauseTimer = pause}
+                                {resumeTimer = resume}
+                                <div>
+                                    <Timer.Minutes/> m
+                                    <Timer.Seconds/> s
+                                </div>
+                                <br/>
+                            </React.Fragment>
+                        )}
+                    </Timer>
+
+                </Row>
                 <br/>
                 <MyTimerNew/>
             </div>
