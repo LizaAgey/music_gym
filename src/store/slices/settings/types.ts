@@ -15,17 +15,18 @@ export type SettingsPageType = {
 
 export type PresetType = {
     id: number
-    name: string
+    title: string
     type: PresetMode
-    elements: Array<PresetElementType>
+    elements: Array<String | number>
+    // elements: Array<PresetElementType>
 }
 
 export type PresetElementType = {
     id: number
     value: string
-    sound: string
+    sound?: string
 }
 
 export enum PresetMode {
-    NOTE, CHORD, UNDEFINED
+    NOTE, CHORD, DEGREE, UNDEFINED
 }

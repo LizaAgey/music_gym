@@ -5,19 +5,19 @@ import {FormSettingsValuesType} from "../../../components/Sidebar/Sidebar";
 export const initialState: SettingsPageType = {
     preset: {
         id: 0,
-        name: 'Preset 1',
+        title: 'Preset 1',
         elements: [],
         type: PresetMode.UNDEFINED
     },
     rawElements: [],
     trainingPeriod: 3,
-    bpm: 120,
+    bpm: 70,
     beats: 4,
     interval: 2,
     isInProgress: false,
     isSoundOn: true,
     isPaused: false,
-    isRandom: false,
+    isRandom: true,
     isShowNext: false,
     presetsInitialData: []
 }

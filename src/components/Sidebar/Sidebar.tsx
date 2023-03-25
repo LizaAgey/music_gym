@@ -26,7 +26,7 @@ export const Sidebar: React.FC = () => {
     const dispatch = useAppDispatch();
     const settingsState = useSelector((state: RootState) => state.settings);
 
-    const [bpm, setBpm] = React.useState<number | null>(120);
+    const [bpm, setBpm] = React.useState<number | null>(70);
 
     const onChange = (newValue: number | null) => {
         setBpm(newValue);
@@ -35,7 +35,7 @@ export const Sidebar: React.FC = () => {
     const [form] = Form.useForm();
 
     useEffect(() => {
-        form.setFieldValue("elements", settingsState.preset?.elements.map(el => el.value).join('\n'))
+        form.setFieldValue("elements", settingsState.preset?.elements.join('\n'))
     }, [settingsState.preset])
 
     useEffect(() => {
@@ -86,10 +86,10 @@ export const Sidebar: React.FC = () => {
                             onChange={onPresetSelectChangeHandler}
                             placeholder="Please select a preset">
                             {settingsState.presetsInitialData.map((preset: PresetType) => {
-                                return <Option value={preset.name}
+                                return <Option value={preset.title}
                                                id={preset.id}
                                                key={preset.id}
-                                >{preset.name}</Option>
+                                >{preset.title}</Option>
                             })}
                         </Select>
                     </Form.Item>
@@ -132,7 +132,7 @@ export const Sidebar: React.FC = () => {
 
                     <Form.Item name="elements" label="Elements">
                         <TextArea rows={8}
-                                  defaultValue={settingsState.preset?.elements.map(el => el.value).join('\n')}/>
+                                  defaultValue={settingsState.preset?.elements.join('\n')}/>
                     </Form.Item>
 
                 </Form>
