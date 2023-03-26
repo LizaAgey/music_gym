@@ -10,14 +10,16 @@ export type SettingsPageType = {
     isRandom: boolean
     rawElements: Array<string>
     preset: PresetType
+    key?: string
     presetsInitialData: Array<PresetType>
 }
 
 export type PresetType = {
     id: number
     title: string
-    type: PresetMode
+    type: EPresetMode
     elements: Array<String | number>
+    category?: ECategory
     // elements: Array<PresetElementType>
 }
 
@@ -27,6 +29,10 @@ export type PresetElementType = {
     sound?: string
 }
 
-export enum PresetMode {
+export enum EPresetMode {
     NOTE, CHORD, DEGREE, UNDEFINED
+}
+
+export enum ECategory {
+    POP= 'Pop', BLUES = 'Blues', JAZZ = 'Jazz'
 }

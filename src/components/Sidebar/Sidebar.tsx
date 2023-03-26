@@ -1,13 +1,15 @@
 import React, {useEffect} from 'react';
 import styles from './Sidebar.module.css'
-import {Button, Col, Form, InputNumber, Row, Select, Slider, Switch} from 'antd';
+import {Button, Col, Divider, Form, InputNumber, Row, Select, Slider, Switch} from 'antd';
 import {presetsInitialData} from '../../data/presetsInitialData';
 import {RootState, useAppDispatch} from "../../store/store";
 import {initPresets, saveSettings, setPreset, stopProgress} from "../../store/slices/settings/slice";
-import {PresetType} from "../../store/slices/settings/types";
+import {EPresetMode, PresetType} from "../../store/slices/settings/types";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
+import {MyTreeSelect} from "../ui/MyTreeSelect";
+import {CheckOutlined, CloseOutlined} from "@mui/icons-material";
 
 
 export type FormSettingsValuesType = {
@@ -19,6 +21,7 @@ export type FormSettingsValuesType = {
     isShowNext: boolean,
     elements: string
     isRandom: boolean
+    key: string
 }
 
 export const Sidebar: React.FC = () => {
@@ -46,12 +49,6 @@ export const Sidebar: React.FC = () => {
         labelCol: {span: 6},
         wrapperCol: {span: 14},
     };
-    const {Option} = Select;
-
-    const onPresetSelectChangeHandler = (currentPresetName: string) => {
-        let find = settingsState.presetsInitialData.find(p => p.name === currentPresetName);
-        find && dispatch(setPreset(find));
-    }
 
     const onStartButtonHandler = (formValues: FormSettingsValuesType) => {
         formValues.bpm = bpm ? bpm : 0;
@@ -81,18 +78,49 @@ export const Sidebar: React.FC = () => {
                     <Form.Item
                         name="preset"
                         label="Preset">
-
-                        <Select
-                            onChange={onPresetSelectChangeHandler}
-                            placeholder="Please select a preset">
-                            {settingsState.presetsInitialData.map((preset: PresetType) => {
-                                return <Option value={preset.title}
-                                               id={preset.id}
-                                               key={preset.id}
-                                >{preset.title}</Option>
-                            })}
-                        </Select>
+                        <MyTreeSelect settingsState={settingsState}/>
                     </Form.Item>
+
+                    {settingsState.preset.type === EPresetMode.DEGREE && <>
+                        <Divider plain>Progression settings</Divider>
+                        <Form.Item
+                            name="key"
+                            label="key">
+
+                            <Select
+                                showSearch
+                                placeholder="Key"
+                                // optionFilterProp="children"
+                                // filterOption={(input, option) =>
+                                //     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                // }
+                                options={[
+                                    {
+                                        value: 'A',
+                                        label: 'A',
+                                    },
+                                    {
+                                        value: 'B',
+                                        label: 'B',
+                                    },
+                                    {
+                                        value: 'C',
+                                        label: 'C',
+                                    },
+                                ]}
+                            />
+                        </Form.Item>
+                        <Form.Item name="major" label="Major">
+                            <Switch defaultChecked
+                            />
+                        </Form.Item>
+                        <Form.Item name="seventh" label="Seventh chords">
+                            <Switch defaultChecked
+                            />
+                        </Form.Item>
+                        <Divider/>
+                    </>}
+
 
                     <Form.Item name="bpm" label="BPM">
                         <Row>

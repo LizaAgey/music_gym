@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {PresetMode, PresetType, SettingsPageType} from "./types";
+import {EPresetMode, PresetType, SettingsPageType} from "./types";
 import {FormSettingsValuesType} from "../../../components/Sidebar/Sidebar";
 
 export const initialState: SettingsPageType = {
@@ -7,7 +7,7 @@ export const initialState: SettingsPageType = {
         id: 0,
         title: 'Preset 1',
         elements: [],
-        type: PresetMode.UNDEFINED
+        type: EPresetMode.UNDEFINED
     },
     rawElements: [],
     trainingPeriod: 3,
