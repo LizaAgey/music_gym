@@ -17,7 +17,7 @@ export const PresetElementsList: React.FC = () => {
                     <List
                         header={<div>{EPresetMode[settingsState.preset.type]}S</div>}
                         bordered
-                        dataSource={settingsState.preset.elements}
+                        dataSource={settingsState.rawElements}
                         renderItem={(item) => (
                             <List.Item>
                                 <Typography.Text mark></Typography.Text> {item}

@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {EPresetMode, PresetType, SettingsPageType} from "./types";
 import {FormSettingsValuesType} from "../../../components/Sidebar/Sidebar";
+import {getChordsForDegree} from "../../../utils/tonal";
 
 export const initialState: SettingsPageType = {
     preset: {
@@ -19,7 +20,12 @@ export const initialState: SettingsPageType = {
     isPaused: false,
     isRandom: true,
     isShowNext: false,
-    presetsInitialData: []
+    presetsInitialData: [],
+    progressionSettings: {
+        key: "C",
+        major: true,
+        seventhChords: true
+    }
 }
 
 const settingsSlice = createSlice({
@@ -36,19 +42,33 @@ const settingsSlice = createSlice({
         switchPause(state) {
             state.isPaused = !state.isPaused;
         },
+        setKey(state, action: PayloadAction<string>) {
+            state.progressionSettings.key = action.payload;
+            state.rawElements = getChordsForDegree(
+                state.progressionSettings.major ? "major" : "minor",
+                state.progressionSettings.key,
+                state.preset.elements.map((element) => Number(element)));
+        },
         setPreset(state, action: PayloadAction<PresetType>) {
             state.preset = action.payload;
+            if (action.payload.type === EPresetMode.NOTE) {
+                // @ts-ignore
+                state.rawElements = action.payload.elements;
+            } else if (action.payload.type === EPresetMode.DEGREE) {
+                // @ts-ignore
+                state.rawElements = getChordsForDegree("major", "C", action.payload.elements);
+            }
+
         },
         saveSettings(state, action: PayloadAction<FormSettingsValuesType>) {
             state.isInProgress = true;
             state.bpm = action.payload.bpm;
             state.isSoundOn = action.payload.soundMode;
             state.isShowNext = action.payload.isShowNext;
-            state.rawElements = action.payload.elements.split("\n");
             state.isRandom = action.payload.isRandom;
         }
     }
 });
 
-export const {initPresets, switchPause, stopProgress, setPreset, saveSettings} = settingsSlice.actions;
+export const {initPresets, switchPause, stopProgress, setPreset, saveSettings, setKey} = settingsSlice.actions;
 export default settingsSlice.reducer;

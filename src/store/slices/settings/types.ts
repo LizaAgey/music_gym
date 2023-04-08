@@ -10,8 +10,14 @@ export type SettingsPageType = {
     isRandom: boolean
     rawElements: Array<string>
     preset: PresetType
-    key?: string
     presetsInitialData: Array<PresetType>
+    progressionSettings: ProgressionSettings
+}
+
+export type ProgressionSettings = {
+    key: string
+    major: boolean
+    seventhChords: boolean
 }
 
 export type PresetType = {

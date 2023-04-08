@@ -30,7 +30,8 @@ export const MyTreeSelect: React.FC<Props> = ({settingsState}) => {
                 dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                 placeholder="Please select"
                 allowClear
-                treeDefaultExpandedKeys={["Notes"]}
+                // treeDefaultExpandedKeys={["Notes"]}
+                treeDefaultExpandAll
                 onChange={onChange}
                 treeData={treeData}
                 defaultValue="leaf1"

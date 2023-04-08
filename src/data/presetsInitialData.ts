@@ -26,13 +26,20 @@ export const presetsInitialData: Array<PresetType>  = [
         title: '3 - 2 - 9 - 1',
         type: EPresetMode.DEGREE,
         category: ECategory.BLUES,
-        elements: [ 2, 5, 1 ]
+        elements: [ 3, 2, 9, 1 ]
     },
     {
         id: 5,
         title: '3 - 1 - 7',
         type: EPresetMode.DEGREE,
         category: ECategory.POP,
-        elements: [ 2, 5, 1 ]
+        elements: [ 3, 1, 7 ]
+    },
+    {
+        id: 6,
+        title: '1 - 2 - 3 - 4 - 5',
+        type: EPresetMode.DEGREE,
+        category: ECategory.POP,
+        elements: [ 1, 2, 3, 4, 5 ]
     }
 ]

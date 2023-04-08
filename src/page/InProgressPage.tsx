@@ -7,6 +7,7 @@ import {stopProgress, switchPause} from "../store/slices/settings/slice";
 import {PauseCircleTwoTone} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import Timer from "react-compound-timer";
+import VantaBackground from "./VantaBackground";
 
 
 function InProgressPage() {
@@ -47,32 +48,34 @@ function InProgressPage() {
 
     return (
         <>
-            <div>
-                <Row>
-                    <Button onClick={onStopHandler} danger>STOP</Button>
-                    {settingsState.isPaused && <PauseCircleTwoTone/>}
+            <VantaBackground>
+                <div>
+                    <Row>
+                        <Button onClick={onStopHandler} danger>STOP</Button>
+                        {settingsState.isPaused && <PauseCircleTwoTone/>}
 
-                    <Timer initialTime={0}
-                           startImmediately={true}
-                           direction={"forward"}>
-                        {/*@ts-ignore*/}
-                        {({resume, pause}) => (
-                            <React.Fragment>
-                                {pauseTimer = pause}
-                                {resumeTimer = resume}
-                                <div>
-                                    <Timer.Minutes/> m
-                                    <Timer.Seconds/> s
-                                </div>
-                                <br/>
-                            </React.Fragment>
-                        )}
-                    </Timer>
+                        <Timer initialTime={0}
+                               startImmediately={true}
+                               direction={"forward"}>
+                            {/*@ts-ignore*/}
+                            {({resume, pause}) => (
+                                <React.Fragment>
+                                    {pauseTimer = pause}
+                                    {resumeTimer = resume}
+                                    <div>
+                                        <Timer.Minutes/> m
+                                        <Timer.Seconds/> s
+                                    </div>
+                                    <br/>
+                                </React.Fragment>
+                            )}
+                        </Timer>
 
-                </Row>
-                <br/>
-                <MyTimerNew/>
-            </div>
+                    </Row>
+                    <br/>
+                    <MyTimerNew/>
+                </div>
+            </VantaBackground>
         </>
     );
 }

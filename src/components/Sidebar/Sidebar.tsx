@@ -3,13 +3,13 @@ import styles from './Sidebar.module.css'
 import {Button, Col, Divider, Form, InputNumber, Row, Select, Slider, Switch} from 'antd';
 import {presetsInitialData} from '../../data/presetsInitialData';
 import {RootState, useAppDispatch} from "../../store/store";
-import {initPresets, saveSettings, setPreset, stopProgress} from "../../store/slices/settings/slice";
-import {EPresetMode, PresetType} from "../../store/slices/settings/types";
+import {initPresets, saveSettings, setKey} from "../../store/slices/settings/slice";
+import {EPresetMode} from "../../store/slices/settings/types";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import {MyTreeSelect} from "../ui/MyTreeSelect";
-import {CheckOutlined, CloseOutlined} from "@mui/icons-material";
+import {ProgressionSettings} from "../ui/ProgressionSettings";
 
 
 export type FormSettingsValuesType = {
@@ -56,6 +56,10 @@ export const Sidebar: React.FC = () => {
         navigate('/progress');
     };
 
+    const onChangeKey = (value: string) => {
+        dispatch(setKey(value))
+    };
+
     return (
         <div className={styles.sidebarContainer}>
             <div className={styles.sidebarContent}>
@@ -82,43 +86,7 @@ export const Sidebar: React.FC = () => {
                     </Form.Item>
 
                     {settingsState.preset.type === EPresetMode.DEGREE && <>
-                        <Divider plain>Progression settings</Divider>
-                        <Form.Item
-                            name="key"
-                            label="key">
-
-                            <Select
-                                showSearch
-                                placeholder="Key"
-                                // optionFilterProp="children"
-                                // filterOption={(input, option) =>
-                                //     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                                // }
-                                options={[
-                                    {
-                                        value: 'A',
-                                        label: 'A',
-                                    },
-                                    {
-                                        value: 'B',
-                                        label: 'B',
-                                    },
-                                    {
-                                        value: 'C',
-                                        label: 'C',
-                                    },
-                                ]}
-                            />
-                        </Form.Item>
-                        <Form.Item name="major" label="Major">
-                            <Switch defaultChecked
-                            />
-                        </Form.Item>
-                        <Form.Item name="seventh" label="Seventh chords">
-                            <Switch defaultChecked
-                            />
-                        </Form.Item>
-                        <Divider/>
+                       <ProgressionSettings settingsState={settingsState}/>
                     </>}
 
 
