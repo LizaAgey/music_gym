@@ -1,24 +1,23 @@
 import React from "react";
 import {TreeSelect} from 'antd';
-import {EPresetMode, PresetType, SettingsPageType} from "../../store/slices/settings/types";
 import {DataNode} from 'antd/lib/tree';
-import {setPreset} from "../../store/slices/settings/slice";
-import {useAppDispatch} from "../../store/store";
+import {RootState, useAppDispatch} from "../../store/store";
+import {useSelector} from "react-redux";
+import {EPresetMode, PresetType} from "../../store/slices/preset/types";
+import {setPresetId} from "../../store/slices/preset/slice";
 
 
-interface Props {
-    settingsState: SettingsPageType;
-}
+export const MyTreeSelect: React.FC = () => {
+    const {preset} = useSelector((state: RootState) => state);
 
-export const MyTreeSelect: React.FC<Props> = ({settingsState}) => {
     const dispatch = useAppDispatch();
     const [value, setValue] = React.useState<string>();
-    const treeData: DataNode[] = getTreeData(settingsState.presetsInitialData);
+    const treeData: DataNode[] = getTreeData(preset.allPresets);
 
     const onChange = (newValue: string) => {
         setValue(newValue);
-        let find = settingsState.presetsInitialData.find(p => p.title === newValue);
-        find && dispatch(setPreset(find));
+        let find = preset.allPresets.find(p => p.title === newValue);
+        find && dispatch(setPresetId(find.id));
     };
 
     return (
@@ -34,7 +33,7 @@ export const MyTreeSelect: React.FC<Props> = ({settingsState}) => {
                 treeDefaultExpandAll
                 onChange={onChange}
                 treeData={treeData}
-                defaultValue="leaf1"
+                defaultValue={preset.currentPreset.title}
             />
         </>
     );

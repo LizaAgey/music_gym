@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three"
-import EFFECT from "vanta/dist/vanta.fog.min"
+import EFFECT from "vanta/dist/vanta.clouds.min"
+// import * as THREE from "vanta/vendor/p5.min"
 
 interface VantaBackgroundProps {
     children: React.ReactNode;
@@ -13,11 +14,12 @@ const VantaBackground: React.FC<VantaBackgroundProps> = ({ children }) => {
         let vantaEffect = EFFECT({
             el: vantaRef.current,
             THREE: THREE,
-            mouseControls: true,
-            touchControls: true,
+            mouseControls: false,
+            touchControls: false,
             gyroControls: false,
             minHeight: 200.00,
-            minWidth: 200.00
+            minWidth: 200.00,
+            speed: 0.40
         })
 
         return () => {

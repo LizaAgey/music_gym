@@ -21,19 +21,16 @@ export const MyTimer: React.FC = () => {
 
     let myInterval: number;
     React.useEffect(() => {
-        console.log("use effect");
         myInterval = window.setInterval(() => {
             if (settingsState.isInProgress && !settingsState.isPaused) {
                 setNextIndex((prevValue) => {
                     setCurrentIndex(prevValue);
-                    // return Math.floor(Math.random() * settingsState.presetElementsToDisplay.length)
                     return 2;
                 });
             }
-        }, settingsState.interval * 1000);
-        console.log("interva", myInterval);
+        }, 1000);
         setId(myInterval);
-    }, [settingsState.isInProgress, settingsState.interval])
+    }, [settingsState.isInProgress])
 
     document.addEventListener("keypress", (event) => {
         if (event.code === 'Space') {
@@ -60,7 +57,7 @@ export const MyTimer: React.FC = () => {
                     <Button type="default" onClick={() => onStop()}> STOP </Button>
 
                     <Timer
-                        initialTime={settingsState.trainingPeriod * 1000 * 60}
+                        // initialTime={settingsState.trainingPeriod * 1000 * 60}
                         startImmediately={true}
                         direction={"backward"}
                         onStart={() => console.log("on start hook")}

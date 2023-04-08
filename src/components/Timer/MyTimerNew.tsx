@@ -3,13 +3,15 @@ import {RootState, useAppDispatch} from "../../store/store";
 import {useSelector} from "react-redux";
 import {stopProgress} from "../../store/slices/settings/slice";
 import styles from './MyTimerNew.module.scss'
+import {PresetType} from "../../store/slices/preset/types";
+import {selectPresetsWithPresetId} from "../../store/slices/preset/selectors";
 
 
 // https://volkov97.github.io/react-compound-timer/
 
 export const MyTimerNew: React.FC = () => {
     const dispatch = useAppDispatch();
-    const settingsState = useSelector((state: RootState) => state.settings);
+    const {preset, settings, metronome} = useSelector((state: RootState) => state);
 
     const click1: HTMLMediaElement = new Audio('./sounds/metronome/click1.mp3');
     const click2: HTMLMediaElement = new Audio('./sounds/metronome/click2.mp3');
@@ -28,24 +30,26 @@ export const MyTimerNew: React.FC = () => {
                 setCount(c => {
                     let innerCount = c;
 
-                    if (innerCount === settingsState.beats) {
+                    if (innerCount === metronome.beatsPerMeasure) {
                         innerCount = 0;
                     }
                     if (innerCount === 0) {
-                        settingsState.isSoundOn && click2.play();
+                        settings.isSoundOn && click2.play();
                         click2.currentTime = 0;
                         // Show new element on strong beat
                         setNextIndex((prevValue) => {
-                            if (settingsState.isRandom) {
+                            if (settings.isRandom) {
                                 setCurrentIndex(prevValue);
-                                let nextIndex: number = Math.floor(Math.random() * settingsState.preset.elements.length);
+                                const presetsWithPresetId: PresetType = preset.currentPreset;
+
+                                let nextIndex: number = Math.floor(Math.random() * presetsWithPresetId.elements.length);
                                 if (nextIndex === prevValue) {
-                                    nextIndex = Math.floor(Math.random() * settingsState.preset.elements.length);
+                                    nextIndex = Math.floor(Math.random() * presetsWithPresetId.elements.length);
                                 }
                                 return nextIndex
                             } else {
                                 setCurrentIndex(prevValue);
-                                if (prevValue === settingsState.rawElements.length - 1) {
+                                if (prevValue === preset.rawElements!.length - 1) {
                                     return 0;
                                 } else {
                                     return prevValue + 1;
@@ -53,7 +57,7 @@ export const MyTimerNew: React.FC = () => {
                             }
                         });
                     } else {
-                        settingsState.isSoundOn && click1.play();
+                        settings.isSoundOn && click1.play();
                         click1.currentTime = 0;
                     }
                     return innerCount + 1;
@@ -65,7 +69,7 @@ export const MyTimerNew: React.FC = () => {
     }
 
     const startThread = () => {
-        let timeInterval = 60000 / settingsState.bpm;
+        let timeInterval = 60000 / metronome.bpm;
         let expected = Date.now() + timeInterval;
 
         let round = () => {
@@ -79,32 +83,32 @@ export const MyTimerNew: React.FC = () => {
     }
 
     React.useEffect(() => {
-        if (settingsState.isInProgress) {
+        if (settings.isInProgress) {
             startThread();
         } else {
             window.clearTimeout(myTimeout);
             setCount(0);
             dispatch(stopProgress());
         }
-    }, [settingsState.isInProgress]);
+    }, [settings.isInProgress]);
 
     React.useEffect(() => {
-        setIsPaused(settingsState.isPaused);
-    }, [settingsState.isPaused]);
+        setIsPaused(settings.isPaused);
+    }, [settings.isPaused]);
 
     return (
         <>
-            {settingsState.isInProgress
+            {settings.isInProgress
                 ? <div className={styles.displayContainer}>
                     <div className={styles.current}>
                         <div className={styles.note}>
-                            {settingsState.rawElements?.[currentIndex]}
+                            {preset.rawElements?.[currentIndex]}
                         </div>
                     </div>
-                    {settingsState.isShowNext &&
+                    {settings.isShowNext &&
                         <div className={styles.next}>
                             <div className={styles.note}>
-                                {settingsState.rawElements?.[nextIndex]}
+                                {preset.rawElements?.[nextIndex]}
                             </div>
                         </div>}
                 </div>

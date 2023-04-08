@@ -1,21 +1,20 @@
 import React, {useEffect} from 'react';
 import styles from './Sidebar.module.css'
-import {Button, Col, Divider, Form, InputNumber, Row, Select, Slider, Switch} from 'antd';
-import {presetsInitialData} from '../../data/presetsInitialData';
+import {Button, Col, Form, InputNumber, Row, Slider, Switch} from 'antd';
 import {RootState, useAppDispatch} from "../../store/store";
-import {initPresets, saveSettings, setKey} from "../../store/slices/settings/slice";
-import {EPresetMode} from "../../store/slices/settings/types";
+import {saveSettings} from "../../store/slices/settings/slice";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import {MyTreeSelect} from "../ui/MyTreeSelect";
 import {ProgressionSettings} from "../ui/ProgressionSettings";
+import {EPresetMode, PresetType} from "../../store/slices/preset/types";
+import {selectPresetsWithPresetId} from '../../store/slices/preset/selectors';
 
 
 export type FormSettingsValuesType = {
     presetName: string,
     trainingPeriod: number,
-    interval: number,
     bpm: number,
     soundMode: boolean
     isShowNext: boolean,
@@ -25,9 +24,10 @@ export type FormSettingsValuesType = {
 }
 
 export const Sidebar: React.FC = () => {
+    const {settings, metronome, preset, progression} = useSelector((state: RootState) => state);
+
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const settingsState = useSelector((state: RootState) => state.settings);
 
     const [bpm, setBpm] = React.useState<number | null>(70);
 
@@ -38,12 +38,8 @@ export const Sidebar: React.FC = () => {
     const [form] = Form.useForm();
 
     useEffect(() => {
-        form.setFieldValue("elements", settingsState.preset?.elements.join('\n'))
-    }, [settingsState.preset])
-
-    useEffect(() => {
-        dispatch(initPresets(presetsInitialData));
-    }, [])
+        form.setFieldValue("elements", preset.currentPreset.elements.map(el => el.value).join('\n'));
+    }, [preset.presetId])
 
     const formItemLayout = {
         labelCol: {span: 6},
@@ -56,10 +52,6 @@ export const Sidebar: React.FC = () => {
         navigate('/progress');
     };
 
-    const onChangeKey = (value: string) => {
-        dispatch(setKey(value))
-    };
-
     return (
         <div className={styles.sidebarContainer}>
             <div className={styles.sidebarContent}>
@@ -70,23 +62,21 @@ export const Sidebar: React.FC = () => {
                      onFinish={onStartButtonHandler}
                      form={form}
                      initialValues={{
-                         'trainingPeriod': 2,
-                         'soundMode': settingsState.isSoundOn,
-                         'isShowNext': settingsState.isShowNext,
-                         'interval': 3,
-                         'beats': 4,
-                         'bpm': settingsState.bpm
+                         'soundMode': settings.isSoundOn,
+                         'isShowNext': settings.isShowNext,
+                         'beats': metronome.beatsPerMeasure,
+                         'bpm': metronome.bpm
                      }}
                      style={{maxWidth: 600}}>
 
                     <Form.Item
                         name="preset"
                         label="Preset">
-                        <MyTreeSelect settingsState={settingsState}/>
+                        <MyTreeSelect/>
                     </Form.Item>
 
-                    {settingsState.preset.type === EPresetMode.DEGREE && <>
-                       <ProgressionSettings settingsState={settingsState}/>
+                    {useSelector(selectPresetsWithPresetId)!.type === EPresetMode.DEGREE && <>
+                        <ProgressionSettings/>
                     </>}
 
 
@@ -127,8 +117,7 @@ export const Sidebar: React.FC = () => {
                     </Form.Item>
 
                     <Form.Item name="elements" label="Elements">
-                        <TextArea rows={8}
-                                  defaultValue={settingsState.preset?.elements.join('\n')}/>
+                        <TextArea rows={8}/>
                     </Form.Item>
 
                 </Form>
