@@ -4,7 +4,7 @@ import {DataNode} from 'antd/lib/tree';
 import {RootState, useAppDispatch} from "../../store/store";
 import {useSelector} from "react-redux";
 import {EPresetMode, PresetType} from "../../store/slices/preset/types";
-import {setPresetId} from "../../store/slices/preset/slice";
+import {setPreset} from "../../store/slices/preset/slice";
 
 
 export const MyTreeSelect: React.FC = () => {
@@ -17,7 +17,7 @@ export const MyTreeSelect: React.FC = () => {
     const onChange = (newValue: string) => {
         setValue(newValue);
         let find = preset.allPresets.find(p => p.title === newValue);
-        find && dispatch(setPresetId(find.id));
+        find && dispatch(setPreset(find));
     };
 
     return (

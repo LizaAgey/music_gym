@@ -1,13 +1,12 @@
 import React from 'react';
-import styles from './Sidebar.module.css'
-import {Button, Col, Form, InputNumber, Row, Slider, Switch} from 'antd';
+import styles from './SidebarIntevals.module.css'
+import {Button, Form, Switch} from 'antd';
 import {RootState, useAppDispatch} from "../../store/store";
 import {saveSettings} from "../../store/slices/settings/slice";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {MyTreeSelect} from "../ui/MyTreeSelect";
 import {ProgressionSettings} from "../ui/ProgressionSettings";
-import {EPresetMode} from "../../store/slices/preset/types";
 import {setBpm} from "../../store/slices/metronome/slice";
 
 
@@ -21,8 +20,8 @@ export type FormSettingsValuesType = {
     key: string
 }
 
-export const Sidebar: React.FC = () => {
-    const {preset, settings, metronome} = useSelector((state: RootState) => state);
+export const SidebarIntevals: React.FC = () => {
+    const {settings, metronome} = useSelector((state: RootState) => state);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -71,34 +70,7 @@ export const Sidebar: React.FC = () => {
                         <MyTreeSelect/>
                     </Form.Item>
 
-                    {preset.currentPreset.type === EPresetMode.DEGREE && <>
-                        <ProgressionSettings/>
-                    </>}
-
-
-                    <Form.Item name="bpm" label="BPM">
-                        <Row>
-                            <Col span={12}>
-                                <Slider
-                                    min={20} max={240}
-                                    onChange={onChange}
-                                    value={typeof localBpm === 'number' ? localBpm : 0}
-                                />
-                            </Col>
-                            <Col span={4}>
-                                <InputNumber
-                                    min={20} max={240}
-                                    style={{margin: '0 16px'}}
-                                    value={localBpm}
-                                    onChange={onChange}
-                                />
-                            </Col>
-                        </Row>
-                    </Form.Item>
-
-                    <Form.Item name="soundMode" label="Sound" valuePropName="checked">
-                        <Switch/>
-                    </Form.Item>
+                    <ProgressionSettings/>
 
                     <Form.Item name="isShowNext" label="Show next element" valuePropName="checked">
                         <Switch/>

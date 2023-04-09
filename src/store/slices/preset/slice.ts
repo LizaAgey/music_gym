@@ -1,11 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ECategory, EPresetMode, PresetsDataType} from "./types";
-import {ENoteName} from "../../types/musicEntities";
-import {getChordsForDegree, getCleanNotes} from "../../../utils/tonal";
+import {EPresetMode, PresetsDataType} from "./types";
+import {getChordsForDegree} from "../../../utils/tonal";
 import {ProgressionSettings} from "../progression/types";
+import {Preset} from "./PresetData";
+import {ENoteName} from "../../types/musicEntities";
 
 export const initialState: PresetsDataType = {
-    presetId: 1,
     currentPreset: {
         id: 1,
         title: 'All notes with sharps',
@@ -13,46 +13,15 @@ export const initialState: PresetsDataType = {
         elements: Object.values(ENoteName)
             .map((n) => ({value: n}))
     },
-    allPresets: [
-        {
-            id: 1,
-            title: 'All notes with sharps',
-            type: EPresetMode.NOTE,
-            elements: Object.values(ENoteName)
-                .map((n) => ({value: n}))
-        },
-        {
-            id: 2,
-            title: 'All clean notes',
-            type: EPresetMode.NOTE,
-            elements: getCleanNotes()
-
-        },
-        {
-            id: 3,
-            title: '2 - 5 - 1',
-            type: EPresetMode.DEGREE,
-            category: ECategory.BLUES,
-            elements: [{value: 2}, {value: 5}, {value: 1}]
-        },
-        {
-            id: 4,
-            title: '3 - 2 - 9 - 1',
-            type: EPresetMode.DEGREE,
-            category: ECategory.BLUES,
-            elements: [{value: 3}, {value: 2}, {value: 4}, {value: 1}]
-
-        }
-    ]
+    allPresets: []
 }
 
 const progressionSlice = createSlice({
     name: "progression",
     initialState,
     reducers: {
-        setPresetId(state, action: PayloadAction<number>) {
-            state.presetId = action.payload;
-            state.currentPreset = state.allPresets.find(p => p.id === state.presetId)!
+        setPreset(state, action: PayloadAction<Preset>) {
+            state.currentPreset = action.payload;
         },
         setRawElements(state, action: PayloadAction<ProgressionSettings>) {
             if (state.currentPreset.type === EPresetMode.DEGREE) {
@@ -70,9 +39,13 @@ const progressionSlice = createSlice({
         },
         setRawNotes(state) {
             state.rawElements = state.currentPreset.elements.map(el => el.value.toString());
+        },
+        initializeState: (state, action: PayloadAction<Array<Preset>>) => {
+            state.allPresets = action.payload;
+            // state.currentPreset = state.allPresets[0];
         }
     }
 });
 
-export const {setRawElements, setPresetId, setRawNotes} = progressionSlice.actions;
+export const {initializeState, setRawElements, setPreset, setRawNotes} = progressionSlice.actions;
 export default progressionSlice.reducer;

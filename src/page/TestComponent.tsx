@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 
 const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
@@ -17,10 +17,15 @@ const TestComponent: React.FC = () => {
 
     useEffect(() => {
 
-        // navigator.mediaDevices.getUserMedia({ audio: { deviceId: "input-device-id" } })
+        navigator.mediaDevices.enumerateDevices()
+            .then(function (devices) {
+                console.log('Available audio input devices:', devices);
+            })
+            .catch(function (error) {
+                console.error('Error enumerating media devices.', error);
+            });
 
-
-        navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+        navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
             const source = audioContext.createMediaStreamSource(stream);
             source.connect(analyser);
 

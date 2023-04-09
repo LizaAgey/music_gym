@@ -1,4 +1,4 @@
-import { Chord } from "@tonaljs/tonal";
+import {Chord} from "@tonaljs/tonal";
 
 export interface Note {
     name: ENoteName;
@@ -39,4 +39,37 @@ export enum EModeName {
     MIXOLYDIAN = 'Mixolydian',
     AEOLIAN = 'Aeolian',
     LOCRIAN = 'Locrian'
+}
+
+export function getNoteNameEnumValue(noteName: string): ENoteName {
+    switch (noteName) {
+        case 'C':
+            return ENoteName.C;
+        case 'C#':
+            return ENoteName.CSharp;
+        case 'D':
+            return ENoteName.D;
+        case 'D#':
+            return ENoteName.DSharp;
+        case 'E':
+            return ENoteName.E;
+        case 'F':
+            return ENoteName.F;
+        case 'F#':
+            return ENoteName.FSharp;
+        case 'G':
+            return ENoteName.G;
+        case 'G#':
+            return ENoteName.GSharp;
+        case 'A':
+            return ENoteName.A;
+        case 'A#':
+            return ENoteName.ASharp;
+        case 'B':
+            return ENoteName.B;
+        default:
+            return ENoteName.C;
+            ;
+        // default: return undefined;
+    }
 }
