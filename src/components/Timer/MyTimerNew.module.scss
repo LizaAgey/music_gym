@@ -5,28 +5,33 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    .current {
-        .note {
-            font-size: 770px;
-            font-family: 'Kanit', sans-serif;
-        }
-        .chord {
-            font-size: 270px;
-        }
-        padding-right: 100px;
+}
+
+.current {
+    &--note {
+        font-size: 770px;
+        font-family: 'Kanit', sans-serif;
     }
-    .next {
-        .note {
-            font-size: 100px;
-        }
-        .chord {
-            font-size: 70px;
-        }
+
+    &--chord {
+        font-size: 270px;
+    }
+
+    padding-right: 100px;
+}
+
+.next {
+    &--note {
+        font-size: 100px;
+    }
+
+    &--chord {
+        font-size: 70px;
     }
 }
 
 .elements {
-    width:300px
+    width: 300px
 }
 
 .displayedValue {

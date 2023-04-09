@@ -3,8 +3,8 @@ import {RootState, useAppDispatch} from "../../store/store";
 import {useSelector} from "react-redux";
 import {stopProgress} from "../../store/slices/settings/slice";
 import styles from './MyTimerNew.module.scss'
-import {PresetType} from "../../store/slices/preset/types";
-import {selectPresetsWithPresetId} from "../../store/slices/preset/selectors";
+import {EPresetMode, PresetType} from "../../store/slices/preset/types";
+import classNames from 'classnames';
 
 
 // https://volkov97.github.io/react-compound-timer/
@@ -96,20 +96,26 @@ export const MyTimerNew: React.FC = () => {
         setIsPaused(settings.isPaused);
     }, [settings.isPaused]);
 
+    const isNote = () => {
+        return preset.currentPreset.type === EPresetMode.NOTE;
+    }
+
     return (
         <>
             {settings.isInProgress
                 ? <div className={styles.displayContainer}>
-                    <div className={styles.current}>
-                        <div className={styles.note}>
-                            {preset.rawElements?.[currentIndex]}
-                        </div>
+                    <div className={classNames(
+                        styles.current,
+                        isNote() ? styles["current--note"] : styles["current--chord"]
+                    )}>
+                        {preset.rawElements?.[currentIndex]}
                     </div>
                     {settings.isShowNext &&
-                        <div className={styles.next}>
-                            <div className={styles.note}>
-                                {preset.rawElements?.[nextIndex]}
-                            </div>
+                        <div className={classNames(
+                            styles.next,
+                            isNote() ? styles["next--note"] : styles["next--chord"]
+                        )}>
+                            {preset.rawElements?.[nextIndex]}
                         </div>}
                 </div>
                 : null}
