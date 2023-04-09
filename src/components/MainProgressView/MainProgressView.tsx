@@ -2,14 +2,15 @@ import React, {useState} from 'react'
 import {RootState, useAppDispatch} from "../../store/store";
 import {useSelector} from "react-redux";
 import {stopProgress} from "../../store/slices/settings/slice";
-import styles from './MyTimerNew.module.scss'
+import styles from '../Timer/MyTimerNew.module.scss'
 import {EPresetMode, PresetType} from "../../store/slices/preset/types";
 import classNames from 'classnames';
+import MetronomeBeats from "../MetronomeBeats/MetronomeBeats";
 
 
 // https://volkov97.github.io/react-compound-timer/
 
-export const MyTimerNew: React.FC = () => {
+export const MainProgressView: React.FC = () => {
     const dispatch = useAppDispatch();
     const {preset, settings, metronome} = useSelector((state: RootState) => state);
 
@@ -103,20 +104,35 @@ export const MyTimerNew: React.FC = () => {
     return (
         <>
             {settings.isInProgress
-                ? <div className={styles.displayContainer}>
-                    <div className={classNames(
-                        styles.current,
-                        isNote() ? styles["current--note"] : styles["current--chord"]
-                    )}>
-                        {preset.rawElements?.[currentIndex]}
+                ?
+                <div className={styles.mainContainer}>
+                    <div>
+                        <div>
+                            <MetronomeBeats currentBeat={count} beatsPerMeasure={metronome.beatsPerMeasure}/>
+                        </div>
                     </div>
-                    {settings.isShowNext &&
+                    <div className={styles.elementContainer}>
                         <div className={classNames(
-                            styles.next,
-                            isNote() ? styles["next--note"] : styles["next--chord"]
+                            styles.current,
+                            isNote() ? styles["current--note"] : styles["current--chord"]
                         )}>
-                            {preset.rawElements?.[nextIndex]}
-                        </div>}
+                            {preset.rawElements?.[currentIndex]}
+                        </div>
+                        {settings.isShowNext &&
+                            <div className={classNames(
+                                styles.next,
+                                isNote() ? styles["next--note"] : styles["next--chord"]
+                            )}>
+                                {preset.rawElements?.[nextIndex]}
+                            </div>}
+                    </div>
+                    <div>
+                        {
+                            preset.currentPreset.type === EPresetMode.DEGREE
+                                ? <div>{preset.currentPreset.elements[currentIndex].value}</div>
+                                : null
+                        }
+                    </div>
                 </div>
                 : null}
 

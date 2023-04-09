@@ -1,15 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap');
 
-.displayContainer {
+.mainContainer {
+
+}
+
+.elementContainer {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 70vh;
 }
 
 .current {
     &--note {
-        font-size: 770px;
+        font-size: 700px;
         font-family: 'Kanit', sans-serif;
     }
 

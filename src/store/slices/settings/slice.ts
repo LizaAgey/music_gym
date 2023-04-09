@@ -4,7 +4,7 @@ import {FormSettingsValuesType} from "../../../components/Sidebar/Sidebar";
 
 export const initialState: SettingsState = {
     isInProgress: false,
-    isSoundOn: true,
+    isSoundOn: false,
     isPaused: false,
     isRandom: true,
     isShowNext: false,
@@ -21,19 +21,6 @@ const settingsSlice = createSlice({
         switchPause(state) {
             state.isPaused = !state.isPaused;
         },
-
-        // setPreset(state, action: PayloadAction<PresetType>) {
-        //     state.preset = action.payload;
-        //     if (action.payload.type === EPresetMode.NOTE) {
-        //         // @ts-ignore
-        //         state.rawElements = action.payload.elements;
-        //     } else if (action.payload.type === EPresetMode.DEGREE) {
-        //         // @ts-ignore
-        //         state.rawElements = getChordsForDegree("major", "C", action.payload.elements);
-        //     }
-        //
-        // },
-
         saveSettings(state, action: PayloadAction<FormSettingsValuesType>) {
             state.isInProgress = true;
             state.isSoundOn = action.payload.soundMode;

@@ -8,8 +8,9 @@ import {useNavigate} from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 import {MyTreeSelect} from "../ui/MyTreeSelect";
 import {ProgressionSettings} from "../ui/ProgressionSettings";
-import {EPresetMode, PresetType} from "../../store/slices/preset/types";
+import {EPresetMode} from "../../store/slices/preset/types";
 import {selectPresetsWithPresetId} from '../../store/slices/preset/selectors';
+import {setBpm} from "../../store/slices/metronome/slice";
 
 
 export type FormSettingsValuesType = {
@@ -18,28 +19,25 @@ export type FormSettingsValuesType = {
     bpm: number,
     soundMode: boolean
     isShowNext: boolean,
-    elements: string
     isRandom: boolean
     key: string
 }
 
 export const Sidebar: React.FC = () => {
-    const {settings, metronome, preset, progression} = useSelector((state: RootState) => state);
+    const {settings, metronome} = useSelector((state: RootState) => state);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const [bpm, setBpm] = React.useState<number | null>(70);
+    const [localBpm, setLocalLocalBpm] = React.useState<number>(metronome.bpm);
 
     const onChange = (newValue: number | null) => {
-        setBpm(newValue);
+        if (newValue) {
+            setLocalLocalBpm(newValue);
+        }
     };
 
     const [form] = Form.useForm();
-
-    useEffect(() => {
-        form.setFieldValue("elements", preset.currentPreset.elements.map(el => el.value).join('\n'));
-    }, [preset.presetId])
 
     const formItemLayout = {
         labelCol: {span: 6},
@@ -47,8 +45,8 @@ export const Sidebar: React.FC = () => {
     };
 
     const onStartButtonHandler = (formValues: FormSettingsValuesType) => {
-        formValues.bpm = bpm ? bpm : 0;
         dispatch(saveSettings(formValues))
+        dispatch(setBpm(localBpm))
         navigate('/progress');
     };
 
@@ -86,14 +84,14 @@ export const Sidebar: React.FC = () => {
                                 <Slider
                                     min={20} max={240}
                                     onChange={onChange}
-                                    value={typeof bpm === 'number' ? bpm : 0}
+                                    value={typeof localBpm === 'number' ? localBpm : 0}
                                 />
                             </Col>
                             <Col span={4}>
                                 <InputNumber
                                     min={20} max={240}
                                     style={{margin: '0 16px'}}
-                                    value={bpm}
+                                    value={localBpm}
                                     onChange={onChange}
                                 />
                             </Col>
@@ -114,10 +112,6 @@ export const Sidebar: React.FC = () => {
 
                     <Form.Item wrapperCol={{span: 12, offset: 6}}>
                         <Button type="primary" htmlType="submit" block> START </Button>
-                    </Form.Item>
-
-                    <Form.Item name="elements" label="Elements">
-                        <TextArea rows={8}/>
                     </Form.Item>
 
                 </Form>

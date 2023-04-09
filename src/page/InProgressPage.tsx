@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Row} from "antd";
-import {MyTimerNew} from "../components/Timer/MyTimerNew";
+import {MainProgressView} from "../components/MainProgressView/MainProgressView";
 import {useNavigate} from "react-router-dom";
 import {RootState, useAppDispatch} from "../store/store";
 import {stopProgress, switchPause} from "../store/slices/settings/slice";
@@ -11,14 +11,12 @@ import VantaBackground from "./VantaBackground";
 
 
 function InProgressPage() {
-
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const settingsState = useSelector((state: RootState) => state.settings);
 
     let pauseTimer: Function;
     let resumeTimer: Function;
-
 
     const onStopHandler = () => {
         dispatch(stopProgress());
@@ -73,7 +71,7 @@ function InProgressPage() {
 
                     </Row>
                     <br/>
-                    <MyTimerNew/>
+                    <MainProgressView/>
                 </div>
             </VantaBackground>
         </>

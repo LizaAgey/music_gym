@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {MetronomeType} from "./types";
 
 export const initialState: MetronomeType = {
@@ -9,8 +9,12 @@ export const initialState: MetronomeType = {
 const metronomeSlice = createSlice({
     name: "metronome",
     initialState,
-    reducers: {}
+    reducers: {
+        setBpm(state, action: PayloadAction<number>) {
+            state.bpm = action.payload;
+        }
+    }
 });
 
-export const {} = metronomeSlice.actions;
+export const {setBpm} = metronomeSlice.actions;
 export default metronomeSlice.reducer;
