@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {RootState, useAppDispatch} from "../../store/store";
+import {RootState, useAppDispatch} from "../../../store/store";
 import {useSelector} from "react-redux";
 import MainInProgressPage from "../MainInProgressPage";
-import {ENoteName, MyChord} from '../../store/types/musicEntities';
-import {transformToMyChord} from "../../utils/tonal";
+import {ENoteName, MyChord} from '../../../store/types/musicEntities';
+import {transformToMyChord} from "../../../utils/tonal";
 import styles from './IntervalFunctionsModeInProgressPage.module.scss'
 
 
@@ -24,8 +24,6 @@ function IntervalFunctionsModeInProgressPage() {
     analyser.fftSize = 2048;
     analyser.minDecibels = -45;
     analyser.maxDecibels = -10;
-
-    const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
     const midiNoteNumberToFrequency = (midiNoteNumber: number) =>
         440 * Math.pow(2, (midiNoteNumber - 69) / 12);
@@ -97,7 +95,6 @@ function IntervalFunctionsModeInProgressPage() {
                             NOTES: {currentChord!.notes.toString()}
                         </>
                     }
-
 
                 </div>
                 <div className={styles.elementContainer}>

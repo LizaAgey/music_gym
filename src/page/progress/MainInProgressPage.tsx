@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, Row} from "antd";
 import {useNavigate} from "react-router-dom";
-import {RootState, useAppDispatch} from "../store/store";
-import {stopProgress, switchPause} from "../store/slices/settings/slice";
+import {RootState, useAppDispatch} from "../../store/store";
+import {stopProgress, switchPause} from "../../store/slices/settings/slice";
 import {PauseCircleTwoTone} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import Timer from "react-compound-timer";

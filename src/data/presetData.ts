@@ -30,6 +30,7 @@ export const presetsInitialData: Array<StoredPresetType> = [
     {
         title: '4 - 5 - 1',
         type: EPresetMode.DEGREE,
+        category: ECategory.POP,
         elements: [4, 5, 1]
     },
     {
@@ -41,6 +42,7 @@ export const presetsInitialData: Array<StoredPresetType> = [
     {
         title: 'TEST 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8',
         type: EPresetMode.DEGREE,
+        category: ECategory.TEST,
         elements: [1, 2, 3, 4, 5, 6, 7, 8]
     },
     {

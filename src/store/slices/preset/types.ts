@@ -43,5 +43,5 @@ export enum EPresetMode {
 }
 
 export enum ECategory {
-    POP = 'Pop', BLUES = 'Blues', JAZZ = 'Jazz'
+    POP = 'Pop', BLUES = 'Blues', JAZZ = 'Jazz', TEST = 'test'
 }
