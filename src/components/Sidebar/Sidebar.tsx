@@ -1,19 +1,20 @@
 import React from 'react';
 import styles from './Sidebar.module.css'
-import {Button, Col, Form, InputNumber, Row, Slider, Switch} from 'antd';
+import {Button, Col, Divider, Form, InputNumber, Radio, Row, Slider, Switch} from 'antd';
 import {RootState, useAppDispatch} from "../../store/store";
-import {saveSettings} from "../../store/slices/settings/slice";
+import {saveSettings, setTrainingMode} from "../../store/slices/settings/slice";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {MyTreeSelect} from "../ui/MyTreeSelect";
 import {ProgressionSettings} from "../ui/ProgressionSettings";
 import {EPresetMode} from "../../store/slices/preset/types";
 import {setBpm} from "../../store/slices/metronome/slice";
+import {RadioChangeEvent} from "antd/es/radio/interface";
+import {ETrainingMode} from "../../store/slices/settings/types";
 
 
 export type FormSettingsValuesType = {
     presetName: string,
-    trainingPeriod: number,
     bpm: number,
     soundMode: boolean
     isShowNext: boolean,
@@ -45,7 +46,15 @@ export const Sidebar: React.FC = () => {
     const onStartButtonHandler = (formValues: FormSettingsValuesType) => {
         dispatch(saveSettings(formValues))
         dispatch(setBpm(localBpm))
-        navigate('/progress');
+        if (settings.trainingMode === ETrainingMode.METRONOME) {
+            navigate('/metronome-progress');
+        } else {
+            navigate('/interval-progress');
+        }
+    };
+
+    const onChangeModeHandler = (e: RadioChangeEvent) => {
+        dispatch(setTrainingMode(e.target.value))
     };
 
     return (
@@ -65,6 +74,15 @@ export const Sidebar: React.FC = () => {
                      }}
                      style={{maxWidth: 600}}>
 
+                    <Divider plain>Training mode</Divider>
+                    <Radio.Group onChange={e => onChangeModeHandler(e)}
+                                 name="radiogroup" defaultValue={ETrainingMode.METRONOME}>
+                        <Radio value={ETrainingMode.METRONOME}>Metronome </Radio>
+                        <Radio value={ETrainingMode.INTERVAL_FUNCTIONS}>Interval functions</Radio>
+                    </Radio.Group>
+                    <Divider/>
+
+
                     <Form.Item
                         name="preset"
                         label="Preset">
@@ -76,29 +94,31 @@ export const Sidebar: React.FC = () => {
                     </>}
 
 
-                    <Form.Item name="bpm" label="BPM">
-                        <Row>
-                            <Col span={12}>
-                                <Slider
-                                    min={20} max={240}
-                                    onChange={onChange}
-                                    value={typeof localBpm === 'number' ? localBpm : 0}
-                                />
-                            </Col>
-                            <Col span={4}>
-                                <InputNumber
-                                    min={20} max={240}
-                                    style={{margin: '0 16px'}}
-                                    value={localBpm}
-                                    onChange={onChange}
-                                />
-                            </Col>
-                        </Row>
-                    </Form.Item>
+                    {settings.trainingMode === ETrainingMode.METRONOME && <>
+                        <Form.Item name="bpm" label="BPM">
+                            <Row>
+                                <Col span={12}>
+                                    <Slider
+                                        min={20} max={240}
+                                        onChange={onChange}
+                                        value={typeof localBpm === 'number' ? localBpm : 0}
+                                    />
+                                </Col>
+                                <Col span={4}>
+                                    <InputNumber
+                                        min={20} max={240}
+                                        style={{margin: '0 16px'}}
+                                        value={localBpm}
+                                        onChange={onChange}
+                                    />
+                                </Col>
+                            </Row>
+                        </Form.Item>
 
-                    <Form.Item name="soundMode" label="Sound" valuePropName="checked">
-                        <Switch/>
-                    </Form.Item>
+                        <Form.Item name="soundMode" label="Sound" valuePropName="checked">
+                            <Switch/>
+                        </Form.Item>
+                    </>}
 
                     <Form.Item name="isShowNext" label="Show next element" valuePropName="checked">
                         <Switch/>

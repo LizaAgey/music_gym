@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 50vh;
+    height: 70vh;
 }
 
 .current {
@@ -21,15 +21,11 @@
         font-size: 270px;
     }
 
-}
+    &--intervals {
+        font-size: 110px;
+    }
 
-.degree {
-    font-size: 170px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
-
 
 .next {
     &--note {
@@ -39,8 +35,6 @@
     &--chord {
         font-size: 70px;
     }
-    padding-left: 100px;
-
 }
 
 .elements {
@@ -52,9 +46,4 @@
     right: 50%;
     color: #457b9d;
     font-size: 260px;
-}
-
-.logo {
-    width: 230px;
-    height: 230px;
 }

@@ -1,8 +1,12 @@
-import {Chord} from "@tonaljs/tonal";
+export type MyChord = {
+    name: string;
+    key: string;
+    notes: Array<Note>
+}
 
-export interface Note {
-    name: ENoteName;
-    octave: number;
+export type Note = {
+    name: string;
+    interval: string;
 }
 
 export interface Mode {

@@ -1,6 +1,5 @@
 import React from 'react';
 import {Button, Row} from "antd";
-import {MainProgressView} from "../components/MainProgressView/MainProgressView";
 import {useNavigate} from "react-router-dom";
 import {RootState, useAppDispatch} from "../store/store";
 import {stopProgress, switchPause} from "../store/slices/settings/slice";
@@ -9,8 +8,11 @@ import {useSelector} from "react-redux";
 import Timer from "react-compound-timer";
 import VantaBackground from "./VantaBackground";
 
+interface MetronomeInProgressProps {
+    children: React.ReactNode;
+}
 
-function InProgressPage() {
+const MainInProgressPage: React.FC<MetronomeInProgressProps> = ({children}) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const settingsState = useSelector((state: RootState) => state.settings);
@@ -71,11 +73,14 @@ function InProgressPage() {
 
                     </Row>
                     <br/>
-                    <MainProgressView/>
+                    <div>
+                        {children}
+                    </div>
+
                 </div>
             </VantaBackground>
         </>
     );
 }
 
-export default InProgressPage;
+export default MainInProgressPage;

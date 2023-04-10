@@ -4,16 +4,18 @@ import {useSelector} from "react-redux";
 import styles from './PresetElementsList.module.scss'
 import {Divider, List, Typography} from "antd";
 import {EPresetMode} from "../../store/slices/preset/types";
-import {setRawNotes} from "../../store/slices/preset/slice";
+import {setRawElements, setRawNotes} from "../../store/slices/preset/slice";
 
 
 export const PresetElementsList: React.FC = () => {
     const dispatch = useAppDispatch();
-    const {preset, settings} = useSelector((state: RootState) => state);
+    const {progression, preset, settings} = useSelector((state: RootState) => state);
 
     useEffect(() => {
         if (preset.currentPreset.type === EPresetMode.NOTE) {
             dispatch(setRawNotes());
+        } else {
+            dispatch(setRawElements(progression));
         }
     }, [preset.currentPreset])
 

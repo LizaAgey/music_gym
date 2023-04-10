@@ -2,15 +2,16 @@ import React from 'react';
 import './App.css';
 import {Route, Routes} from "react-router-dom";
 import SettingsPage from "./page/SettingsPage";
-import InProgressPage from "./page/InProgressPage";
+import MetronomeModeInProgressPage from "./page/MetronomeModeInProgressPage";
 import TestComponent from "./page/TestComponent";
 import {useDispatch} from 'react-redux'
 import {initializeState} from "./store/slices/preset/slice";
-import IntervalsSettingsPage from "./page/IntervalsSettingsPage";
+import IntervalFunctionsModeInProgressPage
+    from "./page/IntervalFunctionsModeInProgressPage/IntervalFunctionsModeInProgressPage";
 import {presetsInitialData} from "./data/presetData";
 import {EPresetMode} from "./store/slices/preset/types";
 import {Preset} from "./store/slices/preset/PresetData";
-import {ENoteName, getNoteNameEnumValue} from "./store/types/musicEntities";
+import {getNoteNameEnumValue} from "./store/types/musicEntities";
 import {Mode} from "tonal";
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
                 if (el.type === EPresetMode.NOTE) {
                     preset.elements = el.elements!.map((n: any) => {
                         let noteNameEnumValue = getNoteNameEnumValue(n);
-                        return {value: noteNameEnumValue };
+                        return {value: noteNameEnumValue};
                     })
                 } else if (el.type === EPresetMode.DEGREE) {
                     preset.category = el.category;
@@ -54,9 +55,9 @@ function App() {
             <div className="app">
                 <Routes>
                     <Route path="/" element={<SettingsPage/>}/>
-                    <Route path="/progress" element={<InProgressPage/>}/>
+                    <Route path="/metronome-progress" element={<MetronomeModeInProgressPage/>}/>
+                    <Route path="/interval-progress" element={<IntervalFunctionsModeInProgressPage/>}/>
                     <Route path="/test" element={<TestComponent/>}/>
-                    <Route path="/int" element={<IntervalsSettingsPage/>}/>
                 </Routes>
             </div>
         </>

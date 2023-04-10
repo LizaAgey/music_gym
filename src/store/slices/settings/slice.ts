@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {SettingsState} from "./types";
+import {ETrainingMode, SettingsState} from "./types";
 import {FormSettingsValuesType} from "../../../components/Sidebar/Sidebar";
 
 export const initialState: SettingsState = {
@@ -8,6 +8,7 @@ export const initialState: SettingsState = {
     isPaused: false,
     isRandom: true,
     isShowNext: false,
+    trainingMode: ETrainingMode.METRONOME
 }
 
 const settingsSlice = createSlice({
@@ -21,6 +22,9 @@ const settingsSlice = createSlice({
         switchPause(state) {
             state.isPaused = !state.isPaused;
         },
+        setTrainingMode(state, action: PayloadAction<ETrainingMode>) {
+            state.trainingMode = action.payload;
+        },
         saveSettings(state, action: PayloadAction<FormSettingsValuesType>) {
             state.isInProgress = true;
             state.isSoundOn = action.payload.soundMode;
@@ -31,5 +35,5 @@ const settingsSlice = createSlice({
 });
 
 
-export const {switchPause, stopProgress, saveSettings} = settingsSlice.actions;
+export const {setTrainingMode, switchPause, stopProgress, saveSettings} = settingsSlice.actions;
 export default settingsSlice.reducer;

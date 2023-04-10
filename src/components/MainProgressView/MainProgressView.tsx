@@ -126,7 +126,7 @@ export const MainProgressView: React.FC = () => {
                                 {preset.rawElements?.[nextIndex]}
                             </div>}
                     </div>
-                    <div>
+                    <div className={classNames(styles.degree)}>
                         {
                             preset.currentPreset.type === EPresetMode.DEGREE
                                 ? <div>{preset.currentPreset.elements[currentIndex].value}</div>
