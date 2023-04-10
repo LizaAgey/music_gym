@@ -6,8 +6,8 @@ export type StoredPresetType = {
     type: EPresetMode
     elements?: Array<number | string>
     category?: ECategory
-    key?: ENoteName.C,
-    mode?: EModeName.IONIAN
+    key?: ENoteName,
+    mode?: EModeName
 }
 
 export const presetsInitialData: Array<StoredPresetType> = [
@@ -20,7 +20,6 @@ export const presetsInitialData: Array<StoredPresetType> = [
         title: 'All clean notes',
         type: EPresetMode.NOTE,
         elements: ['C', 'D', 'E', 'F', 'G', 'A', 'B']
-
     },
     {
         title: '2 - 5 - 1',
@@ -29,15 +28,37 @@ export const presetsInitialData: Array<StoredPresetType> = [
         elements: [2, 5, 1]
     },
     {
+        title: '4 - 5 - 1',
+        type: EPresetMode.DEGREE,
+        elements: [4, 5, 1]
+    },
+    {
         title: '4 - 5 - 2 - 3 - 1',
         type: EPresetMode.DEGREE,
         category: ECategory.BLUES,
         elements: [4, 5, 2, 3, 1]
     },
     {
-        title: 'C Major',
+        title: 'TEST 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8',
+        type: EPresetMode.DEGREE,
+        elements: [1, 2, 3, 4, 5, 6, 7, 8]
+    },
+    {
+        title: '3 - 6 - 2 - 5 - 1',
+        type: EPresetMode.DEGREE,
+        category: ECategory.JAZZ,
+        elements: [3, 6, 2, 5, 1]
+    },
+    {
+        title: 'Ionian / Major',
         type: EPresetMode.SCALE,
         key: ENoteName.C,
         mode: EModeName.IONIAN
+    },
+    {
+        title: 'Natural Minor',
+        type: EPresetMode.SCALE,
+        key: ENoteName.A,
+        mode: EModeName.AEOLIAN
     }
 ]

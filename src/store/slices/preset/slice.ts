@@ -4,6 +4,8 @@ import {getChordsForDegree} from "../../../utils/tonal";
 import {ProgressionSettings} from "../progression/types";
 import {Preset} from "./PresetData";
 import {ENoteName} from "../../types/musicEntities";
+import {Mode} from "tonal";
+
 
 export const initialState: PresetsDataType = {
     currentPreset: {
@@ -33,6 +35,10 @@ const progressionSlice = createSlice({
                         action.payload.seventhChords);
                     state.rawElements = arr;
                 }
+            } else if (state.currentPreset.type === EPresetMode.SCALE) {
+                state.rawElements = action.payload.seventhChords
+                    ? Mode.seventhChords(action.payload.mode, action.payload.key)
+                    : Mode.triads(action.payload.mode, action.payload.key);
             } else {
                 state.rawElements = [];
             }

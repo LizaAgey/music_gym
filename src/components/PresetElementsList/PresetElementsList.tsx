@@ -16,7 +16,7 @@ export const PresetElementsList: React.FC = () => {
             dispatch(setRawNotes());
         } else {
             dispatch(setRawElements(progression));
-        }
+        } 
     }, [preset.currentPreset])
 
     return (

@@ -6,7 +6,7 @@ import {saveSettings, setTrainingMode} from "../../store/slices/settings/slice";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {MyTreeSelect} from "../ui/MyTreeSelect";
-import {ProgressionSettings} from "../ui/ProgressionSettings";
+import {ProgressionSettings} from "./settings/ProgressionSettings";
 import {EPresetMode} from "../../store/slices/preset/types";
 import {setBpm} from "../../store/slices/metronome/slice";
 import {RadioChangeEvent} from "antd/es/radio/interface";
@@ -89,8 +89,13 @@ export const Sidebar: React.FC = () => {
                         <MyTreeSelect/>
                     </Form.Item>
 
-                    {preset.currentPreset.type === EPresetMode.DEGREE && <>
-                        <ProgressionSettings/>
+                    {(preset.currentPreset.type === EPresetMode.DEGREE || preset.currentPreset.type === EPresetMode.SCALE)
+                        && <>
+                            <ProgressionSettings/>
+                        </>}
+
+                    {settings.trainingMode === ETrainingMode.INTERVAL_FUNCTIONS && <>
+                        <>test</>
                     </>}
 
 

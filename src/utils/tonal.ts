@@ -37,3 +37,14 @@ export function getCleanNotes(): NoteElementType[] {
         .filter((note) => !note.includes("b") && !note.includes("#"))
         .map((n) => ({value: n}));
 }
+
+function getRomanNumber(chordName: string, degree: number): string {
+    const chords = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+    const chordRoot = chordName.slice(0, chordName.indexOf('m') > 0 ? chordName.indexOf('m') : chordName.indexOf('maj') > 0 ? chordName.indexOf('maj') : chordName.length).replace("#", "s").toUpperCase();
+    const isMinor = chordName.includes('m') || chordName.includes('maj');
+    const chordIndex = (chordRoot.charCodeAt(0) - 65 + (chordRoot.length > 1 ? 7 : 0)) % 7;
+    const degreeIndex = (degree - 1) % 7;
+    const romanNumeral = chords[(chordIndex + degreeIndex) % 7];
+    return isMinor ? romanNumeral.toLowerCase() : romanNumeral;
+}
+

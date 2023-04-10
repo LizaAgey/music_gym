@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
-import {RootState, useAppDispatch} from "../../store/store";
+import {RootState, useAppDispatch} from "../../../store/store";
 import {Divider, Form, Select, Switch} from "antd";
-import {setKey, setMode, setSeventhChords} from "../../store/slices/progression/slice";
-import {setRawElements, setRawNotes} from "../../store/slices/preset/slice";
+import {setKey, setMode, setSeventhChords} from "../../../store/slices/progression/slice";
+import {setRawElements, setRawNotes} from "../../../store/slices/preset/slice";
 import {useSelector} from "react-redux";
-import {getCleanNotes} from "../../utils/tonal";
-import {EModeName} from "../../store/types/musicEntities";
+import {getCleanNotes} from "../../../utils/tonal";
+import {EModeName} from "../../../store/types/musicEntities";
 
 export const ProgressionSettings: React.FC = () => {
     const dispatch = useAppDispatch();

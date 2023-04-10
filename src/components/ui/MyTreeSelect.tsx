@@ -1,55 +1,62 @@
 import React from "react";
-import {TreeSelect} from 'antd';
-import {DataNode} from 'antd/lib/tree';
+import {Cascader} from 'antd';
 import {RootState, useAppDispatch} from "../../store/store";
 import {useSelector} from "react-redux";
 import {EPresetMode, PresetType} from "../../store/slices/preset/types";
 import {setPreset} from "../../store/slices/preset/slice";
+import type {DefaultOptionType} from 'antd/es/cascader';
 
+interface Option {
+    value: string;
+    label: string;
+    children?: Option[];
+}
 
 export const MyTreeSelect: React.FC = () => {
     const {preset} = useSelector((state: RootState) => state);
-
     const dispatch = useAppDispatch();
-    const [value, setValue] = React.useState<string>();
-    const treeData: DataNode[] = getTreeData(preset.allPresets);
+    const treeData: Option[] = getTreeData(preset.allPresets);
 
-    const onChange = (newValue: string) => {
-        setValue(newValue);
-        let find = preset.allPresets.find(p => p.title === newValue);
+    function handleCascaderChange(value: any, selectedOptions: any) {
+        let find = preset.allPresets.find(p => p.title === value[value.length - 1]);
         find && dispatch(setPreset(find));
+    }
+
+    const filter = (inputValue: string, path: DefaultOptionType[]) => {
+        return path.some(
+            (option) => (option.label as string)?.toLowerCase().indexOf(inputValue.toLowerCase()) > -1,
+        );
     };
 
     return (
         <>
-            <TreeSelect
-                showSearch
-                style={{width: '100%'}}
-                value={value}
-                dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
-                placeholder="Please select"
-                allowClear
-                // treeDefaultExpandedKeys={["Notes"]}
-                treeDefaultExpandAll
-                onChange={onChange}
-                treeData={treeData}
-                defaultValue={preset.currentPreset.title}
-            />
+            <Cascader
+                defaultValue={[EPresetMode[preset.currentPreset.type], preset.currentPreset.title]}
+                onChange={handleCascaderChange}
+                options={treeData}
+                showSearch={{filter}}
+                onSearch={(value) => console.log(value)}
+                placeholder="Please select" placement={"bottomLeft"}/>
         </>
     );
 }
 
-const getTreeData = (objects: Array<PresetType>): DataNode[] => {
+const getTreeData = (objects: Array<PresetType>): Option[] => {
 
     const result: any = [
         {
             value: 'Notes',
-            title: 'Notes',
+            label: 'NOTES',
             children: [],
         },
         {
             value: 'Progressions',
-            title: 'Progressions',
+            label: 'PROGRESSIONS',
+            children: [],
+        },
+        {
+            value: 'Scales',
+            label: 'SCALES',
             children: [],
         },
     ]
@@ -61,15 +68,15 @@ const getTreeData = (objects: Array<PresetType>): DataNode[] => {
             if (category) {
                 category.children.push({
                     value: object.title,
-                    title: object.title
+                    label: object.title
                 })
             } else {
                 progression.children.push({
                     value: object.category,
-                    title: object.category,
+                    label: object.category,
                     children: [{
                         value: object.title,
-                        title: object.title
+                        label: object.title
                     }]
                 })
             }
@@ -78,7 +85,15 @@ const getTreeData = (objects: Array<PresetType>): DataNode[] => {
                 .children.push(
                 {
                     value: object.title,
-                    title: object.title,
+                    label: object.title,
+                }
+            )
+        } else if (object.type == EPresetMode.SCALE) {
+            result.find((el: any) => el.value === 'Scales')
+                .children.push(
+                {
+                    value: object.title,
+                    label: object.title,
                 }
             )
         }
