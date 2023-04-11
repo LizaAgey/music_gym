@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import {Route, Routes} from "react-router-dom";
-import SettingsPage from "./page/SettingsPage";
+import TrainingSettingsPage from "./page/TrainingSettingsPage";
 import TestComponent from "./page/TestComponent";
 import {useDispatch} from 'react-redux'
 import {initializeState} from "./store/slices/preset/slice";
@@ -15,8 +15,9 @@ import {Mode} from "tonal";
 import MetronomeModeInProgressPage from "./page/progress/MetronomeModeInProgressPage/MetronomeModeInProgressPage";
 import MainInProgressPage from "./page/progress/MainInProgressPage";
 import NotFoundPage from "./page/NotFoundPage";
-import {HOME, PROGRESS, METRONOME, INTERVALS} from "./constants/routes";
+import {HOME, PROGRESS, METRONOME, INTERVALS, SETTINGS} from "./constants/routes";
 import TestComponent1 from "./page/progress/MetronomeModeInProgressPage/TestComponent1";
+import {PersonalSettingsPage} from "./components/Sidebar/settings/personal/PersonalSettingsPage";
 
 function App() {
     const dispatch = useDispatch()
@@ -67,7 +68,8 @@ function App() {
         <>
             <div className="app">
                 <Routes>
-                    <Route path={HOME} element={<SettingsPage/>}/>
+                    <Route path={HOME} element={<TrainingSettingsPage/>}/>
+                    <Route path={SETTINGS} element={<PersonalSettingsPage/>}/>
                     <Route path={PROGRESS} element={<MainInProgressPage/>}>
                         {/*<Route path={METRONOME} element={<TestComponent1/>}/>*/}
                         <Route path={METRONOME} element={<MetronomeModeInProgressPage/>}/>

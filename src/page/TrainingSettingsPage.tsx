@@ -3,7 +3,7 @@ import {Sidebar} from "../components/Sidebar/Sidebar";
 import {PresetElementsList} from "../components/PresetElementsList/PresetElementsList";
 import {Col, Row} from 'antd';
 
-function SettingsPage() {
+function TrainingSettingsPage() {
     return (
         <>
             <Row>
@@ -18,4 +18,4 @@ function SettingsPage() {
     );
 }
 
-export default SettingsPage;
+export default TrainingSettingsPage;

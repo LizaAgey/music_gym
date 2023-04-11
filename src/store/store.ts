@@ -1,15 +1,17 @@
 import {configureStore} from '@reduxjs/toolkit'
-import settings from "./slices/settings/slice";
+import training from "./slices/training/slice";
 import preset from "./slices/preset/slice";
 import metronome from "./slices/metronome/slice";
+import settings from "./slices/settings/slice";
 
 import {useDispatch} from "react-redux";
 
 export const store = configureStore({
     reducer: {
-        settings,
+        training,
         preset,
-        metronome
+        metronome,
+        settings
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

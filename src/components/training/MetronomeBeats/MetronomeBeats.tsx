@@ -5,10 +5,7 @@ interface MetronomeBeatsProps {
     currentBeat: number;
 }
 
-const MetronomeBeats: React.FC<MetronomeBeatsProps> = ({
-                                                           beatsPerMeasure,
-                                                           currentBeat,
-                                                       }) => {
+const MetronomeBeats: React.FC<MetronomeBeatsProps> = ({beatsPerMeasure, currentBeat,}) => {
     const circles = [];
     for (let i = 0; i < beatsPerMeasure; i++) {
         circles.push(

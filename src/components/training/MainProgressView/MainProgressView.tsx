@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
-import {RootState, useAppDispatch} from "../../store/store";
+import {RootState, useAppDispatch} from "../../../store/store";
 import {useSelector} from "react-redux";
-import {stopProgress} from "../../store/slices/settings/slice";
-import styles from '../Timer/MyTimerNew.module.scss'
-import {EPresetMode, PresetType} from "../../store/slices/preset/types";
+import {stopProgress} from "../../../store/slices/training/slice";
+import styles from '../MyTimerNew.module.scss'
+import {EPresetMode, PresetType} from "../../../store/slices/preset/types";
 import classNames from 'classnames';
 import MetronomeBeats from "../MetronomeBeats/MetronomeBeats";
 
@@ -12,7 +12,7 @@ import MetronomeBeats from "../MetronomeBeats/MetronomeBeats";
 
 export const MainProgressView: React.FC = () => {
     const dispatch = useAppDispatch();
-    const {preset, settings, metronome} = useSelector((state: RootState) => state);
+    const {preset, training, metronome} = useSelector((state: RootState) => state);
 
     const click1: HTMLMediaElement = new Audio('./sounds/metronome/click1.mp3');
     const click2: HTMLMediaElement = new Audio('./sounds/metronome/click2.mp3');
@@ -35,11 +35,11 @@ export const MainProgressView: React.FC = () => {
                         innerCount = 0;
                     }
                     if (innerCount === 0) {
-                        settings.isSoundOn && click2.play();
+                        training.isSoundOn && click2.play();
                         click2.currentTime = 0;
                         // Show new element on strong beat
                         setNextIndex((prevValue) => {
-                            if (settings.isRandom) {
+                            if (training.isRandom) {
                                 setCurrentIndex(prevValue);
                                 const presetsWithPresetId: PresetType = preset.currentPreset;
 
@@ -58,7 +58,7 @@ export const MainProgressView: React.FC = () => {
                             }
                         });
                     } else {
-                        settings.isSoundOn && click1.play();
+                        training.isSoundOn && click1.play();
                         click1.currentTime = 0;
                     }
                     return innerCount + 1;
@@ -84,18 +84,18 @@ export const MainProgressView: React.FC = () => {
     }
 
     React.useEffect(() => {
-        if (settings.isInProgress) {
+        if (training.isInProgress) {
             startThread();
         } else {
             window.clearTimeout(myTimeout);
             setCount(0);
             dispatch(stopProgress());
         }
-    }, [settings.isInProgress]);
+    }, [training.isInProgress]);
 
     React.useEffect(() => {
-        setIsPaused(settings.isPaused);
-    }, [settings.isPaused]);
+        setIsPaused(training.isPaused);
+    }, [training.isPaused]);
 
     const isNote = () => {
         return preset.currentPreset.type === EPresetMode.NOTE;
@@ -103,7 +103,7 @@ export const MainProgressView: React.FC = () => {
 
     return (
         <>
-            {settings.isInProgress
+            {training.isInProgress
                 ?
                 <div className={styles.mainContainer}>
                     <div>
@@ -118,7 +118,7 @@ export const MainProgressView: React.FC = () => {
                         )}>
                             {preset.rawElements?.[currentIndex]}
                         </div>
-                        {settings.isShowNext &&
+                        {training.isShowNext &&
                             <div className={classNames(
                                 styles.next,
                                 isNote() ? styles["next--note"] : styles["next--chord"]

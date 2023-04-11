@@ -12,7 +12,7 @@ interface Option {
     children?: Option[];
 }
 
-export const MyTreeSelect: React.FC = () => {
+export const MyCascader: React.FC = () => {
     const {preset} = useSelector((state: RootState) => state);
     const dispatch = useAppDispatch();
     const treeData: Option[] = getTreeData(preset.allPresets);

@@ -2,16 +2,16 @@ import React from 'react';
 import styles from './Sidebar.module.css'
 import {Button, Col, Divider, Form, InputNumber, Radio, Row, Slider, Switch} from 'antd';
 import {RootState, useAppDispatch} from "../../store/store";
-import {saveSettings, setTrainingMode} from "../../store/slices/settings/slice";
+import {saveSettings, setTrainingMode} from "../../store/slices/training/slice";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {MyTreeSelect} from "../ui/MyTreeSelect";
-import {ProgressionSettings} from "./settings/ProgressionSettings";
+import {MyCascader} from "../ui/MyCascader";
 import {EPresetMode} from "../../store/slices/preset/types";
 import {setBpm} from "../../store/slices/metronome/slice";
 import {RadioChangeEvent} from "antd/es/radio/interface";
-import {ETrainingMode} from "../../store/slices/settings/types";
+import {ETrainingMode} from "../../store/slices/training/types";
 import {INTERVALS, METRONOME, PROGRESS} from "../../constants/routes";
+import {ProgressionSettings} from "./settings/training/ProgressionSettings";
 
 
 export type FormSettingsValuesType = {
@@ -24,7 +24,7 @@ export type FormSettingsValuesType = {
 }
 
 export const Sidebar: React.FC = () => {
-    const {preset, settings, metronome} = useSelector((state: RootState) => state);
+    const {preset, training, metronome} = useSelector((state: RootState) => state);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -47,7 +47,7 @@ export const Sidebar: React.FC = () => {
     const onStartButtonHandler = (formValues: FormSettingsValuesType) => {
         dispatch(saveSettings(formValues))
         dispatch(setBpm(localBpm))
-        if (settings.trainingMode === ETrainingMode.METRONOME) {
+        if (training.trainingMode === ETrainingMode.METRONOME) {
             navigate(`${PROGRESS}/${METRONOME}`);
         } else {
             navigate(`${PROGRESS}/${INTERVALS}`);
@@ -68,8 +68,8 @@ export const Sidebar: React.FC = () => {
                      onFinish={onStartButtonHandler}
                      form={form}
                      initialValues={{
-                         'soundMode': settings.isSoundOn,
-                         'isShowNext': settings.isShowNext,
+                         'soundMode': training.isSoundOn,
+                         'isShowNext': training.isShowNext,
                          'beats': metronome.beatsPerMeasure,
                          'bpm': metronome.bpm
                      }}
@@ -87,7 +87,7 @@ export const Sidebar: React.FC = () => {
                     <Form.Item
                         name="preset"
                         label="Preset">
-                        <MyTreeSelect/>
+                        <MyCascader/>
                     </Form.Item>
 
                     {(preset.currentPreset.type === EPresetMode.DEGREE || preset.currentPreset.type === EPresetMode.SCALE)
@@ -95,12 +95,12 @@ export const Sidebar: React.FC = () => {
                             <ProgressionSettings/>
                         </>}
 
-                    {settings.trainingMode === ETrainingMode.INTERVAL_FUNCTIONS && <>
+                    {training.trainingMode === ETrainingMode.INTERVAL_FUNCTIONS && <>
                         <>test</>
                     </>}
 
 
-                    {settings.trainingMode === ETrainingMode.METRONOME && <>
+                    {training.trainingMode === ETrainingMode.METRONOME && <>
                         <Form.Item name="bpm" label="BPM">
                             <Row>
                                 <Col span={12}>

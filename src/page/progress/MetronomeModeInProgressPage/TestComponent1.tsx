@@ -2,17 +2,17 @@ import React, {useState, useEffect} from 'react';
 import MainInProgressPage from "../MainInProgressPage";
 import {RootState, useAppDispatch} from "../../../store/store";
 import {useSelector} from "react-redux";
-import styles from "../../../components/Timer/MyTimerNew.module.scss";
-import MetronomeBeats from "../../../components/MetronomeBeats/MetronomeBeats";
+import styles from "../../../components/training/MyTimerNew.module.scss";
+import MetronomeBeats from "../../../components/training/MetronomeBeats/MetronomeBeats";
 import classNames from "classnames";
 import {EPresetMode, PresetType} from "../../../store/slices/preset/types";
-import {stopProgress} from "../../../store/slices/settings/slice";
+import {stopProgress} from "../../../store/slices/training/slice";
 
 
 const TestComponent1: React.FC = () => {
 
     const dispatch = useAppDispatch();
-    const {preset, settings, metronome} = useSelector((state: RootState) => state);
+    const {preset, training, metronome} = useSelector((state: RootState) => state);
 
     const [currentIndex, setCurrentIndex] = useState<number>(0)
     const [nextIndex, setNextIndex] = useState<number>(0)
@@ -35,12 +35,12 @@ const TestComponent1: React.FC = () => {
                 }
                 if (innerCount === 0) {
 
-                    if (settings.isSoundOn) {
+                    if (training.isSoundOn) {
                         playAudio(au![0]);
                     }
 
                     setNextIndex((prevValue) => {
-                        if (settings.isRandom) {
+                        if (training.isRandom) {
                             setCurrentIndex(prevValue);
                             const presetsWithPresetId: PresetType = preset.currentPreset;
 
@@ -59,7 +59,7 @@ const TestComponent1: React.FC = () => {
                         }
                     });
                 } else {
-                    if (settings.isSoundOn) {
+                    if (training.isSoundOn) {
                         playAudio(au![1]!);
                     }
                 }
@@ -125,14 +125,14 @@ const TestComponent1: React.FC = () => {
 
     useEffect(() => {
         if (timer) {
-            if (settings.isPaused) {
+            if (training.isPaused) {
                 clearInterval(timer);
             } else {
                 setTimer(setInterval(() => tick(), (60 / metronome.bpm) * 1000));
             }
         }
 
-    }, [settings.isPaused])
+    }, [training.isPaused])
 
 
     const isNote = () => {
@@ -143,7 +143,7 @@ const TestComponent1: React.FC = () => {
     return (
         <div>
 
-            {settings.isInProgress
+            {training.isInProgress
                 ?
                 <div className={styles.mainContainer}>
                     <div>
@@ -158,7 +158,7 @@ const TestComponent1: React.FC = () => {
                         )}>
                             {preset.rawElements?.[currentIndex]}
                         </div>
-                        {settings.isShowNext &&
+                        {training.isShowNext &&
                             <div className={classNames(
                                 styles.next,
                                 isNote() ? styles["next--note"] : styles["next--chord"]

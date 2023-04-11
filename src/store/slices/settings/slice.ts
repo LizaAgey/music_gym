@@ -1,39 +1,24 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ETrainingMode, SettingsState} from "./types";
-import {FormSettingsValuesType} from "../../../components/Sidebar/Sidebar";
+import {PersonalSettingsState} from "./types";
 
-export const initialState: SettingsState = {
-    isInProgress: false,
-    isSoundOn: false,
-    isPaused: false,
-    isRandom: true,
-    isShowNext: false,
-    trainingMode: ETrainingMode.METRONOME
+export const initialState: PersonalSettingsState = {
+    countdown: false,
+    countdownTimeSec: 5
 }
 
 const settingsSlice = createSlice({
     name: "settings",
     initialState,
     reducers: {
-        stopProgress(state) {
-            state.isInProgress = false;
-            state.isPaused = false;
+        setTrainingMode(state, action: PayloadAction<boolean>) {
+            state.countdown = action.payload;
         },
-        switchPause(state) {
-            state.isPaused = !state.isPaused;
+        setCountdownTimeSec(state, action: PayloadAction<number>) {
+            state.countdownTimeSec = action.payload;
         },
-        setTrainingMode(state, action: PayloadAction<ETrainingMode>) {
-            state.trainingMode = action.payload;
-        },
-        saveSettings(state, action: PayloadAction<FormSettingsValuesType>) {
-            state.isInProgress = true;
-            state.isSoundOn = action.payload.soundMode;
-            state.isShowNext = action.payload.isShowNext;
-            state.isRandom = action.payload.isRandom;
-        }
+
     }
 });
 
-
-export const {setTrainingMode, switchPause, stopProgress, saveSettings} = settingsSlice.actions;
+export const {setCountdownTimeSec, setTrainingMode} = settingsSlice.actions;
 export default settingsSlice.reducer;
