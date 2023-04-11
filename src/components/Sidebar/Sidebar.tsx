@@ -11,6 +11,7 @@ import {EPresetMode} from "../../store/slices/preset/types";
 import {setBpm} from "../../store/slices/metronome/slice";
 import {RadioChangeEvent} from "antd/es/radio/interface";
 import {ETrainingMode} from "../../store/slices/settings/types";
+import {INTERVALS, METRONOME, PROGRESS} from "../../constants/routes";
 
 
 export type FormSettingsValuesType = {
@@ -47,9 +48,9 @@ export const Sidebar: React.FC = () => {
         dispatch(saveSettings(formValues))
         dispatch(setBpm(localBpm))
         if (settings.trainingMode === ETrainingMode.METRONOME) {
-            navigate('/metronome-progress');
+            navigate(`${PROGRESS}/${METRONOME}`);
         } else {
-            navigate('/interval-progress');
+            navigate(`${PROGRESS}/${INTERVALS}`);
         }
     };
 

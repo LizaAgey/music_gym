@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Row} from "antd";
-import {useNavigate} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import {RootState, useAppDispatch} from "../../store/store";
 import {stopProgress, switchPause} from "../../store/slices/settings/slice";
 import {PauseCircleTwoTone} from "@mui/icons-material";
@@ -8,11 +8,7 @@ import {useSelector} from "react-redux";
 import Timer from "react-compound-timer";
 import VantaBackground from "./VantaBackground";
 
-interface MetronomeInProgressProps {
-    children: React.ReactNode;
-}
-
-const MainInProgressPage: React.FC<MetronomeInProgressProps> = ({children}) => {
+const MainInProgressPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const settingsState = useSelector((state: RootState) => state.settings);
@@ -74,7 +70,7 @@ const MainInProgressPage: React.FC<MetronomeInProgressProps> = ({children}) => {
                     </Row>
                     <br/>
                     <div>
-                        {children}
+                        <Outlet/>
                     </div>
 
                 </div>

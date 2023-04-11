@@ -21,6 +21,13 @@ export type PresetElementType = {
     sound?: string
 }
 
+export type Progression = {
+    key: ENoteName
+    seventhChords: boolean
+    mode: string,
+    progression: Array<number>
+}
+
 export type NoteElementType = PresetElementType & {
     value: ENoteName
 }

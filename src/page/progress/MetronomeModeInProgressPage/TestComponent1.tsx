@@ -9,13 +9,13 @@ import {EPresetMode, PresetType} from "../../../store/slices/preset/types";
 import {stopProgress} from "../../../store/slices/settings/slice";
 
 
-const MetronomeModeInProgressPage: React.FC = () => {
+const TestComponent1: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const {preset, settings, metronome} = useSelector((state: RootState) => state);
 
     const [currentIndex, setCurrentIndex] = useState<number>(0)
-    const [nextIndex, setNextIndex] = useState<number>(1)
+    const [nextIndex, setNextIndex] = useState<number>(0)
 
     const [beatCount, setBeatCount] = useState<number>(0);
     const [timer, setTimer] = useState<any>(null);
@@ -34,6 +34,10 @@ const MetronomeModeInProgressPage: React.FC = () => {
                     innerCount = 0;
                 }
                 if (innerCount === 0) {
+
+                    if (settings.isSoundOn) {
+                        playAudio(au![0]);
+                    }
 
                     setNextIndex((prevValue) => {
                         if (settings.isRandom) {
@@ -54,18 +58,16 @@ const MetronomeModeInProgressPage: React.FC = () => {
                             }
                         }
                     });
-                    if (settings.isSoundOn) {
-                        playAudio(au![0]);
-                    }
                 } else {
                     if (settings.isSoundOn) {
-                        playAudio(au![1]);
+                        playAudio(au![1]!);
                     }
                 }
                 return innerCount + 1;
             });
             return au;
         })
+
     };
 
     React.useEffect(() => {
@@ -77,7 +79,7 @@ const MetronomeModeInProgressPage: React.FC = () => {
             if (ac) {
                 const source = ac.createBufferSource();
                 const gainNode = ac.createGain();
-                gainNode.gain.value = 0.3;
+                gainNode.gain.value = 0.7;
 
                 source.buffer = buffer;
                 source.connect(gainNode);
@@ -87,14 +89,19 @@ const MetronomeModeInProgressPage: React.FC = () => {
             }
             return ac;
         })
+
     };
+
 
     useEffect(() => {
         const AudioContext = window.AudioContext || window.AudioContext;
         const audioCtx = new AudioContext();
+        //
+        // const click1 = new Audio('./sounds/metronome/click3.wav');
+        // const click2 = new Audio('./sounds/metronome/click4.flac');
 
-        const click1 = new Audio('/sounds/metronome/click3.wav');
-        const click2 = new Audio('/sounds/metronome/click2.mp3');
+        const click1 = new Audio('./sounds/metronome/click3.wav');
+        const click2 = new Audio('./sounds/metronome/click2.mp3');
 
         setAudioCtx(audioCtx);
 
@@ -104,17 +111,16 @@ const MetronomeModeInProgressPage: React.FC = () => {
             return await audioCtx.decodeAudioData(arrayBuffer);
         };
 
-        Promise.all([loadAudio(click1), loadAudio(click2)])
-            .then((buffers) => {
-                const [click1Buffer, click2Buffer] = buffers;
-                setAudio([click1Buffer, click2Buffer])
-            })
-            .then(() => setTimer(setInterval(() => tick(), (60 / metronome.bpm) * 1000)));
+        Promise.all([loadAudio(click1), loadAudio(click2)]).then((buffers) => {
+            const [click1Buffer, click2Buffer] = buffers;
+            setAudio([click1Buffer, click2Buffer])
+        }).then(() => setTimer(setInterval(() => tick(), (60 / metronome.bpm) * 1000)));
 
         return () => {
             clearInterval(timer);
             dispatch(stopProgress());
         };
+
     }, []);
 
     useEffect(() => {
@@ -125,11 +131,14 @@ const MetronomeModeInProgressPage: React.FC = () => {
                 setTimer(setInterval(() => tick(), (60 / metronome.bpm) * 1000));
             }
         }
+
     }, [settings.isPaused])
+
 
     const isNote = () => {
         return preset.currentPreset.type === EPresetMode.NOTE;
     }
+
 
     return (
         <div>
@@ -166,8 +175,9 @@ const MetronomeModeInProgressPage: React.FC = () => {
                     </div>
                 </div>
                 : null}
+
         </div>
     );
 };
 
-export default MetronomeModeInProgressPage;
+export default TestComponent1;

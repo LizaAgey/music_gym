@@ -18,8 +18,10 @@ export const MyTreeSelect: React.FC = () => {
     const treeData: Option[] = getTreeData(preset.allPresets);
 
     function handleCascaderChange(value: any, selectedOptions: any) {
-        let find = preset.allPresets.find(p => p.title === value[value.length - 1]);
-        find && dispatch(setPreset(find));
+        let selectedPreset = preset.allPresets.find(p => p.title === value[value.length - 1]);
+        if (selectedPreset) {
+            dispatch(setPreset(selectedPreset));
+        }
     }
 
     const filter = (inputValue: string, path: DefaultOptionType[]) => {

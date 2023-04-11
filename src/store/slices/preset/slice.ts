@@ -1,9 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {EPresetMode, PresetsDataType} from "./types";
+import {EPresetMode, PresetsDataType, Progression} from "./types";
 import {getChordsForDegree} from "../../../utils/tonal";
-import {ProgressionSettings} from "../progression/types";
 import {Preset} from "./PresetData";
-import {ENoteName} from "../../types/musicEntities";
+import {EModeName, ENoteName} from "../../types/musicEntities";
 import {Mode} from "tonal";
 
 
@@ -18,40 +17,70 @@ export const initialState: PresetsDataType = {
     allPresets: []
 }
 
+function recalculateRawValueForProgression(state: PresetsDataType) {
+    const pr: Progression | undefined = state.currentPreset.progression;
+    if (pr) {
+        if (state.currentPreset.type === EPresetMode.DEGREE) {
+            const arr: Array<string> = getChordsForDegree(
+                pr.mode,
+                pr.key,
+                state.currentPreset.elements.map(el => el.value as number),
+                pr.seventhChords);
+            state.rawElements = arr;
+        } else if (state.currentPreset.type === EPresetMode.SCALE) {
+            state.rawElements = pr.seventhChords
+                ? Mode.seventhChords(pr.mode, pr.key)
+                : Mode.triads(pr.mode, pr.key);
+        }
+    }
+}
+
 const progressionSlice = createSlice({
     name: "progression",
     initialState,
     reducers: {
         setPreset(state, action: PayloadAction<Preset>) {
             state.currentPreset = action.payload;
-        },
-        setRawElements(state, action: PayloadAction<ProgressionSettings>) {
+            const pr: Progression | undefined = state.currentPreset.progression;
+
             if (state.currentPreset.type === EPresetMode.DEGREE) {
-                if (state.currentPreset.elements.every((element) => typeof element.value == "number")) {
-                    const arr: Array<string> = getChordsForDegree(
-                        action.payload.mode,
-                        action.payload.key,
-                        state.currentPreset.elements.map(el => el.value as number),
-                        action.payload.seventhChords);
-                    state.rawElements = arr;
-                }
+                recalculateRawValueForProgression(state);
             } else if (state.currentPreset.type === EPresetMode.SCALE) {
-                state.rawElements = action.payload.seventhChords
-                    ? Mode.seventhChords(action.payload.mode, action.payload.key)
-                    : Mode.triads(action.payload.mode, action.payload.key);
+                if (pr) {
+                    state.rawElements = pr.seventhChords
+                        ? Mode.seventhChords(pr.mode, pr.key)
+                        : Mode.triads(pr.mode, pr.key);
+                }
+            } else if (state.currentPreset.type === EPresetMode.NOTE) {
+                state.rawElements = state.currentPreset.elements.map(el => el.value.toString());
             } else {
                 state.rawElements = [];
             }
         },
-        setRawNotes(state) {
-            state.rawElements = state.currentPreset.elements.map(el => el.value.toString());
-        },
         initializeState: (state, action: PayloadAction<Array<Preset>>) => {
             state.allPresets = action.payload;
             // state.currentPreset = state.allPresets[0];
+        },
+        setSeventhChords(state, action: PayloadAction<boolean>) {
+            if (state.currentPreset.progression) {
+                state.currentPreset.progression.seventhChords = action.payload;
+            }
+            recalculateRawValueForProgression(state);
+        },
+        setKey(state, action: PayloadAction<string>) {
+            if (state.currentPreset.progression) {
+                state.currentPreset.progression.key = ENoteName[action.payload as keyof typeof ENoteName];
+            }
+            recalculateRawValueForProgression(state);
+        },
+        setMode(state, action: PayloadAction<string>) {
+            if (state.currentPreset.progression) {
+                state.currentPreset.progression.mode = EModeName[action.payload.toUpperCase() as keyof typeof EModeName];
+            }
+            recalculateRawValueForProgression(state);
         }
     }
 });
 
-export const {initializeState, setRawElements, setPreset, setRawNotes} = progressionSlice.actions;
+export const {initializeState, setKey, setMode, setSeventhChords, setPreset} = progressionSlice.actions;
 export default progressionSlice.reducer;

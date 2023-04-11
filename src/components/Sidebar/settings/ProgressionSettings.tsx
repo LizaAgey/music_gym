@@ -1,15 +1,14 @@
 import React, {useEffect} from "react";
 import {RootState, useAppDispatch} from "../../../store/store";
 import {Divider, Form, Select, Switch} from "antd";
-import {setKey, setMode, setSeventhChords} from "../../../store/slices/progression/slice";
-import {setRawElements, setRawNotes} from "../../../store/slices/preset/slice";
+import {setKey, setMode, setSeventhChords} from "../../../store/slices/preset/slice";
 import {useSelector} from "react-redux";
 import {getCleanNotes} from "../../../utils/tonal";
 import {EModeName} from "../../../store/types/musicEntities";
 
 export const ProgressionSettings: React.FC = () => {
     const dispatch = useAppDispatch();
-    const {progression, preset} = useSelector((state: RootState) => state);
+    const {preset} = useSelector((state: RootState) => state);
 
     const onChangeKey = (e: any) => {
         dispatch(setKey(e));
@@ -23,14 +22,6 @@ export const ProgressionSettings: React.FC = () => {
         dispatch(setSeventhChords(e));
     }
 
-    useEffect(() => {
-        dispatch(setRawElements(progression));
-    }, [progression])
-
-    useEffect(() => {
-        dispatch(setRawElements(progression));
-    }, [])
-
     return (
         <>
             <Divider plain>Progression settings</Divider>
@@ -41,7 +32,7 @@ export const ProgressionSettings: React.FC = () => {
                     onChange={(e) => onChangeKey(e)}
                     showSearch
                     placeholder="Key"
-                    defaultValue={progression.key}
+                    defaultValue={preset.currentPreset.progression?.key}
                     options={getCleanNotes().map((n) => {
                         return {
                             value: n.value,
@@ -56,7 +47,7 @@ export const ProgressionSettings: React.FC = () => {
                 <Select
                     onChange={(e) => onChangeMode(e)}
                     showSearch
-                    defaultValue={progression.mode}
+                    defaultValue={preset.currentPreset.progression?.mode}
                     options={Object.values(EModeName).map((m) => {
                         return {
                             value: m,

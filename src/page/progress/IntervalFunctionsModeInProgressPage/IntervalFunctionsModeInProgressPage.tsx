@@ -1,17 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
-import {RootState, useAppDispatch} from "../../../store/store";
+import {RootState} from "../../../store/store";
 import {useSelector} from "react-redux";
-import MainInProgressPage from "../MainInProgressPage";
 import {ENoteName, MyChord} from '../../../store/types/musicEntities';
 import {transformToMyChord} from "../../../utils/tonal";
 import styles from './IntervalFunctionsModeInProgressPage.module.scss'
 
 
 function IntervalFunctionsModeInProgressPage() {
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-    const {preset, progression} = useSelector((state: RootState) => state);
+    const {preset} = useSelector((state: RootState) => state);
 
     const [progressionChords, setProgressionChords] = React.useState(preset.rawElements)
     const [currentChord, setCurrentChord] = React.useState<MyChord>()
@@ -86,21 +82,19 @@ function IntervalFunctionsModeInProgressPage() {
 
     return (
         <>
-            <MainInProgressPage>
-                <div> noteName={closestNoteName}</div>
-                <div>
-                    {
-                        currentChord && <>
-                            CURRENT: {currentChord!.name}
-                            NOTES: {currentChord!.notes.toString()}
-                        </>
-                    }
+            <div> noteName={closestNoteName}</div>
+            <div>
+                {
+                    currentChord && <>
+                        CURRENT: {currentChord!.name}
+                        NOTES: {currentChord!.notes.toString()}
+                    </>
+                }
 
-                </div>
-                <div className={styles.elementContainer}>
+            </div>
+            <div className={styles.elementContainer}>
 
-                </div>
-            </MainInProgressPage>
+            </div>
         </>
     );
 }
