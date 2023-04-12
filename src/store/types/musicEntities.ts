@@ -1,14 +1,3 @@
-export type MyChord = {
-    name: string;
-    key: string;
-    notes: Array<Note>
-}
-
-export type Note = {
-    name: string;
-    interval: string;
-}
-
 export interface Mode {
     name: EModeName;
     intervals: number[];

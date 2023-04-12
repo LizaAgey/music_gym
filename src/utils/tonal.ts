@@ -1,6 +1,7 @@
 import {Chord, Mode} from "tonal";
-import {ENoteName, MyChord, Note} from "../store/types/musicEntities";
+import {ENoteName} from "../store/types/musicEntities";
 import {NoteElementType} from "../store/slices/preset/types";
+import {MyChord, Note} from "src/page/progress/IntervalFunctionsModeInProgressPage/IntervalFunctionsModeInProgressPage";
 
 // https://github.com/tonaljs/tonal
 export function getChordsForDegree(modeName: string, tonic: string,
@@ -15,18 +16,19 @@ export function getChordsForDegree(modeName: string, tonic: string,
 }
 
 export function transformToMyChord(chordName: string): MyChord | undefined {
-    let {tonic, intervals, notes, name} = Chord.get(chordName);
+    let {tonic, intervals, notes, symbol} = Chord.get(chordName);
     if (!tonic || !notes) {
         return undefined;
     }
 
     const transformedNotes: Array<Note> = notes.map((note, index) => ({
         name: note,
-        interval: intervals[index]
+        interval: intervals[index],
+        checked: false
     }));
 
     return {
-        name: name,
+        name: symbol,
         key: tonic,
         notes: transformedNotes,
     };

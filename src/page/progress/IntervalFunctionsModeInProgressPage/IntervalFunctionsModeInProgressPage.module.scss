@@ -11,6 +11,27 @@
     height: 70vh;
 }
 
+.degreesContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+
+    height: 30px;
+    font-size: 70px;
+    font-weight: bold;
+}
+
+.square {
+    margin-right: 50px;
+    filter: brightness(50%);
+
+    &.checked {
+        background-color: lightblue;
+        filter: brightness(100%);
+    }
+}
+
 .current {
     &--note {
         font-size: 700px;
@@ -46,4 +67,31 @@
     right: 50%;
     color: #457b9d;
     font-size: 260px;
+}
+
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    height: 70vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.column {
+    padding: 20px;
+}
+
+.largeText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 270px;
+}
+
+.leftText {
+    p {
+        text-align: left;
+        font-size: 50px;
+    }
 }
