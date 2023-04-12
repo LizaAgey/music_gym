@@ -24,11 +24,11 @@
     "noEmit": true,
     "skipDefaultLibCheck": true,
     "paths": {
-      "three": ["../node_modules/three/build/three.module.js"]
+      "three": ["../node_modules/three/build/three.module.js"],
+      "*": ["*", "types/*"]
     },
     "jsx": "react"
   },
-  "include": [
-    "src"
-  ]
+  "files": ["./src/@types/globals.d.ts", "./src/@types/assets.d.ts"],
+  "include": ["src/**/*"]
 }
