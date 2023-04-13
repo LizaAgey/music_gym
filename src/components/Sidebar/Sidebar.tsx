@@ -2,14 +2,14 @@ import React from 'react';
 import styles from './Sidebar.module.css'
 import {Button, Col, Divider, Form, InputNumber, Radio, Row, Slider, Switch} from 'antd';
 import {RootState, useAppDispatch} from "../../store/store";
-import {saveSettings, setTrainingMode} from "../../store/slices/training/slice";
+import {saveSettings, setTrainingMode} from "../../store/slices/training/main/slice";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {MyCascader} from "../ui/MyCascader";
 import {EPresetMode} from "../../store/slices/preset/types";
 import {setBpm} from "../../store/slices/metronome/slice";
 import {RadioChangeEvent} from "antd/es/radio/interface";
-import {ETrainingMode} from "../../store/slices/training/types";
+import {ETrainingMode} from "../../store/slices/training/main/types";
 import {INTERVALS, METRONOME, PROGRESS} from "../../constants/routes";
 import {ProgressionSettings} from "./settings/training/ProgressionSettings";
 
@@ -24,7 +24,7 @@ export type FormSettingsValuesType = {
 }
 
 export const Sidebar: React.FC = () => {
-    const {preset, training, metronome} = useSelector((state: RootState) => state);
+    const {preset, mainTraining, metronome} = useSelector((state: RootState) => state);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -47,7 +47,7 @@ export const Sidebar: React.FC = () => {
     const onStartButtonHandler = (formValues: FormSettingsValuesType) => {
         dispatch(saveSettings(formValues))
         dispatch(setBpm(localBpm))
-        if (training.trainingMode === ETrainingMode.METRONOME) {
+        if (mainTraining.trainingMode === ETrainingMode.METRONOME) {
             navigate(`${PROGRESS}/${METRONOME}`);
         } else {
             navigate(`${PROGRESS}/${INTERVALS}`);
@@ -68,8 +68,8 @@ export const Sidebar: React.FC = () => {
                      onFinish={onStartButtonHandler}
                      form={form}
                      initialValues={{
-                         'soundMode': training.isSoundOn,
-                         'isShowNext': training.isShowNext,
+                         'soundMode': mainTraining.isSoundOn,
+                         'isShowNext': mainTraining.isShowNext,
                          'beats': metronome.beatsPerMeasure,
                          'bpm': metronome.bpm
                      }}
@@ -95,12 +95,12 @@ export const Sidebar: React.FC = () => {
                             <ProgressionSettings/>
                         </>}
 
-                    {training.trainingMode === ETrainingMode.INTERVAL_FUNCTIONS && <>
+                    {mainTraining.trainingMode === ETrainingMode.INTERVAL_FUNCTIONS && <>
                         <>test</>
                     </>}
 
 
-                    {training.trainingMode === ETrainingMode.METRONOME && <>
+                    {mainTraining.trainingMode === ETrainingMode.METRONOME && <>
                         <Form.Item name="bpm" label="BPM">
                             <Row>
                                 <Col span={12}>

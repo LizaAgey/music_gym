@@ -6,13 +6,13 @@ import styles from "../../../components/training/MyTimerNew.module.scss";
 import MetronomeBeats from "../../../components/training/MetronomeBeats/MetronomeBeats";
 import classNames from "classnames";
 import {EPresetMode, PresetType} from "../../../store/slices/preset/types";
-import {stopProgress} from "../../../store/slices/training/slice";
+import {stopProgress} from "../../../store/slices/training/main/slice";
 
 
 const TestComponent1: React.FC = () => {
 
     const dispatch = useAppDispatch();
-    const {preset, training, metronome} = useSelector((state: RootState) => state);
+    const {preset, mainTraining, metronome} = useSelector((state: RootState) => state);
 
     const [currentIndex, setCurrentIndex] = useState<number>(0)
     const [nextIndex, setNextIndex] = useState<number>(0)
@@ -35,12 +35,12 @@ const TestComponent1: React.FC = () => {
                 }
                 if (innerCount === 0) {
 
-                    if (training.isSoundOn) {
+                    if (mainTraining.isSoundOn) {
                         playAudio(au![0]);
                     }
 
                     setNextIndex((prevValue) => {
-                        if (training.isRandom) {
+                        if (mainTraining.isRandom) {
                             setCurrentIndex(prevValue);
                             const presetsWithPresetId: PresetType = preset.currentPreset;
 
@@ -59,7 +59,7 @@ const TestComponent1: React.FC = () => {
                         }
                     });
                 } else {
-                    if (training.isSoundOn) {
+                    if (mainTraining.isSoundOn) {
                         playAudio(au![1]!);
                     }
                 }
@@ -125,14 +125,14 @@ const TestComponent1: React.FC = () => {
 
     useEffect(() => {
         if (timer) {
-            if (training.isPaused) {
+            if (mainTraining.isPaused) {
                 clearInterval(timer);
             } else {
                 setTimer(setInterval(() => tick(), (60 / metronome.bpm) * 1000));
             }
         }
 
-    }, [training.isPaused])
+    }, [mainTraining.isPaused])
 
 
     const isNote = () => {
@@ -143,7 +143,7 @@ const TestComponent1: React.FC = () => {
     return (
         <div>
 
-            {training.isInProgress
+            {mainTraining.isInProgress
                 ?
                 <div className={styles.mainContainer}>
                     <div>
@@ -158,7 +158,7 @@ const TestComponent1: React.FC = () => {
                         )}>
                             {preset.rawElements?.[currentIndex]}
                         </div>
-                        {training.isShowNext &&
+                        {mainTraining.isShowNext &&
                             <div className={classNames(
                                 styles.next,
                                 isNote() ? styles["next--note"] : styles["next--chord"]

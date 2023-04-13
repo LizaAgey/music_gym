@@ -19,7 +19,6 @@ import {TEST, HOME, INTERVALS, METRONOME, PROGRESS, SETTINGS, TRAINING, TUNER} f
 import {PersonalSettingsPage} from "./components/Sidebar/settings/personal/PersonalSettingsPage";
 import MainLayout from "./page/MainLayout";
 import {PrivateRoute} from "./features/auth/PrivateRoute";
-import GuitarTuner from "./features/tuner/GuitarTuner";
 
 function App() {
 
@@ -35,7 +34,7 @@ function App() {
                     <Route path={HOME} element={<MainLayout/>}>
                         <Route index element={<TrainingSettingsPage/>}/>
                         <Route path={TEST} element={<TestComponent/>}/>
-                        <Route path={TUNER} element={<GuitarTuner/>}/>
+                        {/*<Route path={TUNER} element={<GuitarTuner/>}/>*/}
 
                         <Route path='private' element={<PrivateRoute/>}>
                             <Route path={SETTINGS} element={<PersonalSettingsPage/>}/>

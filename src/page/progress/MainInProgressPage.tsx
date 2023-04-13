@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Row} from "antd";
 import {Outlet, useNavigate} from "react-router-dom";
 import {RootState, useAppDispatch} from "../../store/store";
-import {stopProgress, switchPause} from "../../store/slices/training/slice";
+import {stopProgress, switchPause} from "../../store/slices/training/main/slice";
 import {PauseCircleTwoTone} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import Timer from "react-compound-timer";
@@ -11,7 +11,7 @@ import VantaBackground from "./VantaBackground";
 const MainInProgressPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { training } = useSelector((state: RootState) => state);
+    const { mainTraining } = useSelector((state: RootState) => state);
 
     let pauseTimer: Function;
     let resumeTimer: Function;
@@ -35,12 +35,12 @@ const MainInProgressPage: React.FC = () => {
     }, []);
 
     React.useEffect(() => {
-        if (training.isPaused) {
+        if (mainTraining.isPaused) {
             pauseTimer();
         } else {
             resumeTimer();
         }
-    }, [training.isPaused]);
+    }, [mainTraining.isPaused]);
 
     return (
         <>
@@ -48,7 +48,7 @@ const MainInProgressPage: React.FC = () => {
                 <div>
                     <Row>
                         <Button onClick={onStopHandler} danger>STOP</Button>
-                        {training.isPaused && <PauseCircleTwoTone/>}
+                        {mainTraining.isPaused && <PauseCircleTwoTone/>}
 
                         <Timer initialTime={0}
                                startImmediately={true}

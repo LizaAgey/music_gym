@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ETrainingMode, TrainingState} from "./types";
-import {FormSettingsValuesType} from "../../../components/Sidebar/Sidebar";
+import {FormSettingsValuesType} from "../../../../components/Sidebar/Sidebar";
 
 export const initialState: TrainingState = {
     isInProgress: false,
@@ -11,8 +11,8 @@ export const initialState: TrainingState = {
     trainingMode: ETrainingMode.METRONOME
 }
 
-const trainingSlice = createSlice({
-    name: "training",
+const mainTrainingSlice = createSlice({
+    name: "main_training",
     initialState,
     reducers: {
         stopProgress(state) {
@@ -35,5 +35,5 @@ const trainingSlice = createSlice({
 });
 
 
-export const {setTrainingMode, switchPause, stopProgress, saveSettings} = trainingSlice.actions;
-export default trainingSlice.reducer;
+export const {setTrainingMode, switchPause, stopProgress, saveSettings} = mainTrainingSlice.actions;
+export default mainTrainingSlice.reducer;
