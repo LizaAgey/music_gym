@@ -1,4 +1,4 @@
-import {NoteAnalyzer} from "../../../../utils/audioUtils";
+import {NoteAnalyzer} from "../../../../utils/audio/audioUtils";
 
 export type MyChord = {
     name: string;

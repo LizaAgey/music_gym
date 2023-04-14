@@ -15,10 +15,11 @@ import {Mode} from "tonal";
 import MetronomeModeInProgressPage from "./page/progress/MetronomeModeInProgressPage/MetronomeModeInProgressPage";
 import MainInProgressPage from "./page/progress/MainInProgressPage";
 import NotFoundPage from "./page/NotFoundPage";
-import {TEST, HOME, INTERVALS, METRONOME, PROGRESS, SETTINGS, TRAINING, TUNER} from "./constants/routes";
+import {HOME, INTERVALS, METRONOME, PROGRESS, SETTINGS, TEST} from "./constants/routes";
 import {PersonalSettingsPage} from "./components/Sidebar/settings/personal/PersonalSettingsPage";
 import MainLayout from "./page/MainLayout";
 import {PrivateRoute} from "./features/auth/PrivateRoute";
+import TestComponent1 from "./page/TestComponent1";
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
                     <Route path={HOME} element={<MainLayout/>}>
                         <Route index element={<TrainingSettingsPage/>}/>
                         <Route path={TEST} element={<TestComponent/>}/>
+                        <Route path="test1" element={<TestComponent1/>}/>
                         {/*<Route path={TUNER} element={<GuitarTuner/>}/>*/}
 
                         <Route path='private' element={<PrivateRoute/>}>

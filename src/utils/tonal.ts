@@ -1,7 +1,7 @@
 import {Chord, Mode} from "tonal";
 import {ENoteName} from "../store/types/musicEntities";
 import {NoteElementType} from "../store/slices/preset/types";
-import {MyChord, Note} from "src/page/progress/IntervalFunctionsModeInProgressPage/IntervalFunctionsModeInProgressPage";
+import {MyChord, Note} from "../store/slices/training/interval/types";
 
 // https://github.com/tonaljs/tonal
 export function getChordsForDegree(modeName: string, tonic: string,

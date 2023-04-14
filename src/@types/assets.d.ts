@@ -7,3 +7,5 @@ declare module 'vanta/vendor/*' {
     const THREE: any;
     export default THREE;
 }
+
+declare module 'ml5'

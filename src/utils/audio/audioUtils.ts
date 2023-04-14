@@ -1,4 +1,4 @@
-import {ENoteName} from "../store/types/musicEntities";
+import {ENoteName} from "../../store/types/musicEntities";
 
 const audioContext = new AudioContext();
 const analyser = audioContext.createAnalyser();

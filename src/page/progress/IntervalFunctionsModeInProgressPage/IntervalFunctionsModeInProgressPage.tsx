@@ -3,7 +3,7 @@ import {RootState, useAppDispatch} from "../../../store/store";
 import {useSelector} from "react-redux";
 import styles from './IntervalFunctionsModeInProgressPage.module.scss'
 import classNames from "classnames";
-import {analyser, audioContext, updateFrequencyData} from '../../../utils/audioUtils';
+import {analyser, audioContext, updateFrequencyData} from '../../../utils/audio/audioUtils';
 import {setNoteAnalyser, setRawElements} from "../../../store/slices/training/interval/slice";
 import {selectNextChordString} from "../../../store/slices/training/interval/selector";
 

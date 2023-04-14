@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IntervalTrainingState, MyChord} from "./types";
 import {transformToMyChord} from "../../../../utils/tonal";
-import {NoteAnalyzer} from "../../../../utils/audioUtils";
+import {NoteAnalyzer} from "../../../../utils/audio/audioUtils";
 
 
 const initialState: IntervalTrainingState = {
